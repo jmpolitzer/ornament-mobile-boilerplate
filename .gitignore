@@ -1,4 +1,5 @@
 node_modules/
 .expo/
 npm-debug.*
+yarn-error.log*
 src/config.js
