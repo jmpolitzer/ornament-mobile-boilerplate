@@ -12,6 +12,9 @@ class Home extends React.Component {
         <Link to={'/counter'}>
           <Text>counter</Text>
         </Link>
+        <Link to={'/recipes'}>
+          <Text>recipes</Text>
+        </Link>
       </View>
     );
   }
