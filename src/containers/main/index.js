@@ -1,7 +1,6 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Text, Button } from 'react-native';
 import { addNavigationHelpers } from 'react-navigation';
 import { RootNavigator } from '../../navigation';
 

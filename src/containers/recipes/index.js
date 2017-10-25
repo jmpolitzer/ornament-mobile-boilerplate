@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { FlatList, StyleSheet, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { addRecipe, handleRecipesData} from '../../redux/recipes/actions';
@@ -32,12 +32,33 @@ class Recipes extends React.Component {
 
   render() {
     return(
-      <View>
-        <Button title='Add Recipe' onPress={this.addRecipe} />
+      <View style={styles.container}>
+        <View>
+          <Button title='Add Recipe' onPress={this.addRecipe} />
+        </View>
+        <View>
+          <FlatList data={this.props.recipeList}
+                    renderItem={({item}) => {
+                      return <Text style={styles.item}>{item.name}, {item.country}</Text>;
+                    }}
+                    keyExtractor={(item, index) => index} />
+        </View>
       </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: 22
+  },
+  item: {
+    padding: 10,
+    fontSize: 18,
+    height: 44
+  }
+});
 
 const mapStateToProps = state => {
   return {
