@@ -1,27 +1,27 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import { Route } from 'react-router-native';
-import Home from '../home';
-import Counter from '../counter';
-import Recipes from '../recipes';
+import { bindActionCreators } from 'redux';
+import { connect } from 'react-redux';
+import { View, Text, Button } from 'react-native';
+import { addNavigationHelpers } from 'react-navigation';
+import { RootNavigator } from '../../navigation';
 
-export default class Main extends React.Component {
+class Main extends React.Component {
   render() {
-    return(
-      <View style={styles.container}>
-        <Route exact path='/' component={Home} />
-        <Route path='/counter' component={Counter} />
-        <Route path='/recipes' component={Recipes} />
-      </View>
+    return (
+      <RootNavigator navigation={addNavigationHelpers({
+        dispatch: this.props.dispatch,
+        state: this.props.navigation
+      })} />
     );
   }
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+const mapStateToProps = state => {
+  return {
+    navigation: state.navigation
+  }
+}
+
+export default connect(
+  mapStateToProps
+)(Main);

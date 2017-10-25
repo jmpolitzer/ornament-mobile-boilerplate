@@ -2,7 +2,6 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, Text, TouchableOpacity, Button } from 'react-native';
-import { Link } from 'react-router-native';
 import { increment, decrement } from '../../redux/counter/actions';
 
 class Counter extends React.Component {
@@ -34,9 +33,7 @@ class Counter extends React.Component {
           <Button title='decrement' onPress={this.decrement} />
         </View>
         <View>
-          <Link to={'/'}>
-            <Text>geaux home</Text>
-          </Link>
+          <Button title='geaux home' onPress={() => this.props.navigation.navigate('Home')} />
         </View>
       </View>
     );

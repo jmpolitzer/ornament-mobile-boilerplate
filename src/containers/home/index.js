@@ -1,20 +1,15 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Text } from 'react-native';
-import { Link } from 'react-router-native';
+import { View, Text, Button } from 'react-native';
 
 class Home extends React.Component {
   render() {
     return(
       <View>
         <Text>You are home.</Text>
-        <Link to={'/counter'}>
-          <Text>counter</Text>
-        </Link>
-        <Link to={'/recipes'}>
-          <Text>recipes</Text>
-        </Link>
+        <Button title='counter' onPress={() => this.props.navigation.navigate('Counter')} />
+        <Button title='recipes' onPress={() => this.props.navigation.navigate('Recipes')} />
       </View>
     );
   }
