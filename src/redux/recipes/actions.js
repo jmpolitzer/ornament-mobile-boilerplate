@@ -1,10 +1,10 @@
 import { firestore } from '../../firebase';
 import * as Constants from './constants';
 
-export function addRecipe() {
+export function addRecipe(values) {
   firestore.collection('recipes').add({
-    name:'Brokyo',
-    country: 'Yapan'
+    name: values.name,
+    duration: values.duration
   });
 
   return {
@@ -14,12 +14,17 @@ export function addRecipe() {
 
 export function handleRecipesData(snapshot) {
   return dispatch => {
-    let recipes = [];
+    const recipes = [];
 
     snapshot.forEach((doc) => {
-      const recipe = doc.data();
-      recipe.id = doc.id;
-      recipes.push(recipe);
+      const { name, duration } = doc.data();
+
+      recipes.push({
+        key: doc.id,
+        doc,
+        name,
+        duration
+      });
     });
 
     dispatch(addRecipeSuccess(recipes));

@@ -6,11 +6,9 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case Constants.ADD_RECIPE:
-      return {
-        ...state
-      }
 
+    /* TODO: Create semantic name for receiving firestore updates and differentiate between
+    successful CRUD actions. */ 
     case Constants.ADD_RECIPE_SUCCESS:
       return {
         ...state,
