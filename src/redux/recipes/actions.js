@@ -14,6 +14,7 @@ export function addRecipe(values) {
 
 export function handleRecipesData(snapshot) {
   return dispatch => {
+    const docLength = snapshot.docChanges.length;
     const recipes = [];
 
     snapshot.forEach((doc) => {
@@ -27,13 +28,50 @@ export function handleRecipesData(snapshot) {
       });
     });
 
-    dispatch(addRecipeSuccess(recipes));
+    if(docLength && docLength > 1) {
+      dispatch(fetchRecipesSuccess(recipes));
+    } else {
+      snapshot.docChanges.forEach((change) => {
+        switch(change.type) {
+          case 'added':
+            dispatch(addRecipeSuccess(recipes));
+            break;
+          case 'modified':
+            dispatch(updateRecipeSuccess(recipes));
+            break;
+          case 'removed':
+            dispatch(deleteRecipeSuccess(recipes));
+            break;
+        }
+      });
+    }
   }
 }
 
 function addRecipeSuccess(recipes) {
   return {
     type: Constants.ADD_RECIPE_SUCCESS,
+    recipes
+  }
+}
+
+function fetchRecipesSuccess(recipes) {
+  return {
+    type: Constants.FETCH_RECIPES_SUCCESS,
+    recipes
+  }
+}
+
+function updateRecipeSuccess(recipes) {
+  return {
+    type: Constants.UPDATE_RECIPE_SUCCESS,
+    recipes
+  }
+}
+
+function deleteRecipeSuccess(recipes) {
+  return {
+    type: Constants.DELETE_RECIPE_SUCCESS,
     recipes
   }
 }

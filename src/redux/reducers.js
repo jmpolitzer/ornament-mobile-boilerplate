@@ -8,7 +8,6 @@ import { ADD_RECIPE } from './recipes/constants';
 export default combineReducers({
   form: formReducer.plugin({
     createRecipeForm: (state, action) => {
-      console.log(action.type);
       switch(action.type) {
         case ADD_RECIPE:
           return undefined;

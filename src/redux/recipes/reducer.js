@@ -6,10 +6,25 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
-
-    /* TODO: Create semantic name for receiving firestore updates and differentiate between
-    successful CRUD actions. */ 
     case Constants.ADD_RECIPE_SUCCESS:
+      return {
+        ...state,
+        recipeList: action.recipes
+      }
+
+    case Constants.FETCH_RECIPES_SUCCESS:
+      return {
+        ...state,
+        recipeList: action.recipes
+      }
+
+    case Constants.UPDATE_RECIPE_SUCCESS:
+      return {
+        ...state,
+        recipeList: action.recipes
+      }
+
+    case Constants.DELETE_RECIPE_SUCCESS:
       return {
         ...state,
         recipeList: action.recipes
