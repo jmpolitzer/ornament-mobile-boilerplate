@@ -1,6 +1,13 @@
 import { firestore } from '../../firebase';
 import * as Constants from './constants';
 
+export function showRecipesLoading(bool) {
+  return {
+    type: Constants.IS_FETCHING_RECIPES,
+    isFetchingRecipes: bool
+  }
+}
+
 export function addRecipe(values) {
   firestore.collection('recipes').add({
     name: values.name,
@@ -28,7 +35,7 @@ export function handleRecipesData(snapshot) {
       });
     });
 
-    if(docLength && docLength > 1) {
+    if(!docLength || docLength > 1) {
       dispatch(fetchRecipesSuccess(recipes));
     } else {
       snapshot.docChanges.forEach((change) => {

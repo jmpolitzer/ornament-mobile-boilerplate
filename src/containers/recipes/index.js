@@ -1,10 +1,10 @@
 import React from 'react';
-import { Keyboard, FlatList, StyleSheet, View, Text, Button } from 'react-native';
+import { ActivityIndicator, Keyboard, FlatList, StyleSheet, View, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreateRecipeForm from './createRecipeForm';
-import { addRecipe, handleRecipesData} from '../../redux/recipes/actions';
+import { addRecipe, handleRecipesData, showRecipesLoading } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';
 
 class Recipes extends React.Component {
@@ -16,6 +16,10 @@ class Recipes extends React.Component {
     this.handleRecipesData = this.handleRecipesData.bind(this);
   }
 
+  componentWillMount() {
+    this.props.showRecipesLoading(true);
+  }
+
   componentDidMount() {
     this.unsubscribe = this.ref.onSnapshot(this.handleRecipesData);
   }
@@ -25,6 +29,7 @@ class Recipes extends React.Component {
   }
 
   addRecipe() {
+    this.props.showRecipesLoading(true);
     this.props.addRecipe(this.props.createRecipeForm.values);
     Keyboard.dismiss();
   }
@@ -40,10 +45,12 @@ class Recipes extends React.Component {
           <CreateRecipeForm onSubmit={this.addRecipe} />
         </View>
         <View>
+          {this.props.isFetchingRecipes ? <ActivityIndicator/> :
+          (!this.props.recipeList.length ? <Text>You do not currently have any recipes.</Text> :
           <List>
             <FlatList data={this.props.recipeList}
                       renderItem={({item}) => <ListItem key={item.key} title={`${item.name}, ${item.duration}`}/>} />
-          </List>
+          </List>)}
         </View>
       </View>
     );
@@ -59,12 +66,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
+    isFetchingRecipes: state.recipes.isFetchingRecipes,
     recipeList: state.recipes.recipeList,
     createRecipeForm: state.form.createRecipeForm
   };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
+  showRecipesLoading,
   addRecipe,
   handleRecipesData
 }, dispatch);

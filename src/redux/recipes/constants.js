@@ -1,3 +1,4 @@
+export const IS_FETCHING_RECIPES = 'recipes/IS_FETCHING_RECIPES';
 export const ADD_RECIPE = 'recipes/ADD_RECIPE';
 export const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE';
 export const DELETE_RECIPE = 'recipes/DELETE_RECIPE';
