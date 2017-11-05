@@ -14,6 +14,7 @@ class Recipes extends React.Component {
     this.unsubscribe = null;
     this.addRecipe = this.addRecipe.bind(this);
     this.handleRecipesData = this.handleRecipesData.bind(this);
+    this.navigateToRecipe = this.navigateToRecipe.bind(this);
   }
 
   componentWillMount() {
@@ -38,6 +39,10 @@ class Recipes extends React.Component {
     this.props.handleRecipesData(snapshot);
   }
 
+  navigateToRecipe(key) {
+    this.props.navigation.navigate('Recipe', { id: key });
+  }
+
   render() {
     return(
       <View style={styles.container}>
@@ -49,7 +54,9 @@ class Recipes extends React.Component {
           (!this.props.recipeList.length ? <Text>You do not currently have any recipes.</Text> :
           <List>
             <FlatList data={this.props.recipeList}
-                      renderItem={({item}) => <ListItem key={item.key} title={`${item.name}, ${item.duration}`}/>} />
+                      renderItem={({item}) => <ListItem key={item.key}
+                                                        title={`${item.name}`}
+                                                        onPress={() => this.navigateToRecipe(item.key)} />} />
           </List>)}
         </View>
       </View>

@@ -8,6 +8,12 @@ export function showRecipesLoading(bool) {
   }
 }
 
+export function clearSelectedRecipe() {
+  return {
+    type: Constants.CLEAR_SELECTED_RECIPE
+  }
+}
+
 export function addRecipe(values) {
   firestore.collection('recipes').add({
     name: values.name,
@@ -16,6 +22,15 @@ export function addRecipe(values) {
 
   return {
     type: Constants.ADD_RECIPE
+  }
+}
+
+export function fetchRecipe(id) {
+  return dispatch => {
+    firestore.collection('recipes').doc(id).get()
+    .then((doc) => {
+      dispatch(fetchRecipeSuccess(doc.data()));
+    })
   }
 }
 
@@ -59,6 +74,13 @@ function addRecipeSuccess(recipes) {
   return {
     type: Constants.ADD_RECIPE_SUCCESS,
     recipes
+  }
+}
+
+function fetchRecipeSuccess(recipe) {
+  return {
+    type: Constants.FETCH_RECIPE_SUCCESS,
+    recipe
   }
 }
 
