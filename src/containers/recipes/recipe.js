@@ -2,7 +2,7 @@ import React from 'react';
 import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { showRecipesLoading, fetchRecipe } from '../../redux/recipes/actions';
+import { showRecipesLoading, fetchRecipe, clearSelectedRecipe } from '../../redux/recipes/actions';
 // import { firestore } from '../../firebase';
 
 class Recipe extends React.Component {
@@ -25,6 +25,7 @@ class Recipe extends React.Component {
   }
 
   componentWillUnmount() {
+    this.props.clearSelectedRecipe();
     // this.unsubscribe();
   }
 
@@ -59,7 +60,8 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  fetchRecipe
+  fetchRecipe,
+  clearSelectedRecipe
 }, dispatch);
 
 export default connect(
