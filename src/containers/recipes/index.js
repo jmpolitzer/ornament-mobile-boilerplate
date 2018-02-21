@@ -1,6 +1,7 @@
 import React from 'react';
 import { ActivityIndicator, Keyboard, FlatList, StyleSheet, View, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
+import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreateRecipeForm from './createRecipeForm';
@@ -44,6 +45,13 @@ class Recipes extends React.Component {
   }
 
   render() {
+    const swipeoutBtns = [
+      {
+        text: 'Delete',
+        type: 'delete',
+      }
+    ];
+
     return(
       <View style={styles.container}>
         <View>
@@ -54,9 +62,14 @@ class Recipes extends React.Component {
           (!this.props.recipeList.length ? <Text>You do not currently have any recipes.</Text> :
           <List>
             <FlatList data={this.props.recipeList}
-                      renderItem={({item}) => <ListItem key={item.key}
-                                                        title={`${item.name}`}
-                                                        onPress={() => this.navigateToRecipe(item.key)} />} />
+                      renderItem={({item}) => <Swipeout right={swipeoutBtns}
+                                                        onOpen={(sectionId, rowId, direction) => {
+                                                          console.log(sectionId, rowId, direction, item);
+                                                        }}>
+                                                <ListItem key={item.key}
+                                                          title={`${item.name}`}
+                                                          onPress={() => this.navigateToRecipe(item.key)} />
+                                              </Swipeout>} />
           </List>)}
         </View>
       </View>
