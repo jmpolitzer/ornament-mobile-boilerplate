@@ -1,25 +1,27 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import { showRecipesLoading, clearActiveRecipe } from '../../redux/recipes/actions';
+// import {  } from '../../redux/recipes/actions';
+// import { firestore } from '../../firebase';
 
-class Recipe extends React.Component {
+class EditRecipe extends React.Component {
   constructor() {
     super();
   }
 
-  componentWillUnmount() {
-    this.props.clearActiveRecipe();
+  componentWillMount() {
+
   }
 
   render() {
     return(
       <View style={styles.container}>
+        {!this.props.recipe ? <ActivityIndicator /> :
         <View>
           <Text>Name: {this.props.recipe.name}</Text>
           <Text>Duration: {this.props.recipe.duration}</Text>
-        </View>
+        </View>}
       </View>
     );
   }
@@ -39,10 +41,10 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  clearActiveRecipe
+
 }, dispatch);
 
 export default connect(
   mapStateToProps,
   mapDispatchToProps
-)(Recipe);
+)(EditRecipe);

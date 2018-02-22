@@ -15,10 +15,10 @@ export default (state = initialState, action) => {
         isFetchingRecipes: action.isFetchingRecipes
       }
 
-    case Constants.CLEAR_SELECTED_RECIPE:
+    case Constants.SET_ACTIVE_RECIPE:
       return {
         ...state,
-        recipe: null
+        recipe: action.recipe
       }
 
     case Constants.SET_ACTIVE_RECIPE_ROW:
@@ -27,17 +27,17 @@ export default (state = initialState, action) => {
         activeRecipeRow: action.activeRecipeRow
       }
 
+      case Constants.CLEAR_ACTIVE_RECIPE:
+      return {
+        ...state,
+        recipe: null
+      }
+
     case Constants.ADD_RECIPE_SUCCESS:
       return {
         ...state,
         recipeList: action.recipes,
         isFetchingRecipes: false
-      }
-
-    case Constants.FETCH_RECIPE_SUCCESS:
-      return {
-        ...state,
-        recipe: action.recipe
       }
 
     case Constants.FETCH_RECIPES_SUCCESS:

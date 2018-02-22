@@ -8,16 +8,23 @@ export function showRecipesLoading(bool) {
   }
 }
 
-export function clearSelectedRecipe() {
+export function setActiveRecipe(recipe) {
   return {
-    type: Constants.CLEAR_SELECTED_RECIPE
-  }
+      type: Constants.SET_ACTIVE_RECIPE,
+      recipe
+    }
 }
 
 export function setActiveRecipeRow(rowId) {
   return {
     type: Constants.SET_ACTIVE_RECIPE_ROW,
     activeRecipeRow: rowId
+  }
+}
+
+export function clearActiveRecipe() {
+  return {
+    type: Constants.CLEAR_ACTIVE_RECIPE
   }
 }
 
@@ -29,15 +36,6 @@ export function addRecipe(values) {
 
   return {
     type: Constants.ADD_RECIPE
-  }
-}
-
-export function fetchRecipe(id) {
-  return dispatch => {
-    firestore.collection('recipes').doc(id).get()
-    .then((doc) => {
-      dispatch(fetchRecipeSuccess(doc.data()));
-    })
   }
 }
 
@@ -89,13 +87,6 @@ function addRecipeSuccess(recipes) {
   return {
     type: Constants.ADD_RECIPE_SUCCESS,
     recipes
-  }
-}
-
-function fetchRecipeSuccess(recipe) {
-  return {
-    type: Constants.FETCH_RECIPE_SUCCESS,
-    recipe
   }
 }
 

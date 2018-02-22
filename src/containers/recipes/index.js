@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreateRecipeForm from './createRecipeForm';
 import { addRecipe, deleteRecipe, handleRecipesData,
-         showRecipesLoading, setActiveRecipeRow } from '../../redux/recipes/actions';
+         showRecipesLoading, setActiveRecipe, setActiveRecipeRow } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';
 
 class Recipes extends React.Component {
@@ -48,8 +48,9 @@ class Recipes extends React.Component {
     this.props.handleRecipesData(snapshot);
   }
 
-  navigateToRecipe(key) {
-    this.props.navigation.navigate('Recipe', { id: key });
+  navigateToRecipe(recipe) {
+    this.props.navigation.navigate('Recipe', { id: recipe.key });
+    this.props.setActiveRecipe(recipe);
     this.props.setActiveRecipeRow(null);
   }
 
@@ -96,7 +97,7 @@ class Recipes extends React.Component {
                   }}>
                     <ListItem key={item.key}
                               title={`${item.name}`}
-                              onPress={() => this.navigateToRecipe(item.key)} />
+                              onPress={() => this.navigateToRecipe(item)} />
                   </Swipeout>} />
           </List>)}
         </View>
@@ -126,6 +127,7 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   addRecipe,
   deleteRecipe,
   handleRecipesData,
+  setActiveRecipe,
   setActiveRecipeRow
 }, dispatch);
 
