@@ -82,16 +82,16 @@ class Recipes extends React.Component {
           <List>
             <FlatList data={this.props.recipeList}
               extraData={this.props.activeRecipeRow}
-              renderItem={({item, index}) =>
+              renderItem={({item}) =>
                 <Swipeout right={swipeoutBtns}
-                  rowId={index}
+                  rowId={item.key}
                   autoClose={true}
-                  close={index !== this.props.activeRecipeRow}
+                  close={item.key !== this.props.activeRecipeRow}
                   onOpen={(sectionId, rowId, direction) => {
-                    this.onSwipeOpen(index, direction);
+                    this.onSwipeOpen(item.key, direction);
                   }}
                   onClose={(sectionId, rowId, direction) => {
-                    this.onSwipeClose(index, direction);
+                    this.onSwipeClose(item.key, direction);
                   }}>
                     <ListItem key={item.key}
                               title={`${item.name}`}
