@@ -41,6 +41,14 @@ export function fetchRecipe(id) {
   }
 }
 
+export function deleteRecipe(id) {
+  firestore.collection('recipes').doc(id).delete();
+
+  return {
+    type: Constants.DELETE_RECIPE
+  }
+}
+
 export function handleRecipesData(snapshot) {
   return dispatch => {
     const docLength = snapshot.docChanges.length;

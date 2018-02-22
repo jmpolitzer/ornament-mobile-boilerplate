@@ -5,7 +5,8 @@ import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreateRecipeForm from './createRecipeForm';
-import { addRecipe, handleRecipesData, showRecipesLoading, setActiveRecipeRow } from '../../redux/recipes/actions';
+import { addRecipe, deleteRecipe, handleRecipesData,
+         showRecipesLoading, setActiveRecipeRow } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';
 
 class Recipes extends React.Component {
@@ -40,7 +41,7 @@ class Recipes extends React.Component {
   }
 
   deleteRecipe() {
-    console.log('deleting recipe at row ', this.props.activeRecipeRow);
+    this.props.deleteRecipe(this.props.activeRecipeRow);
   }
 
   handleRecipesData(snapshot) {
@@ -123,6 +124,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   showRecipesLoading,
   addRecipe,
+  deleteRecipe,
   handleRecipesData,
   setActiveRecipeRow
 }, dispatch);
