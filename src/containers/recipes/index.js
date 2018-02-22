@@ -49,6 +49,7 @@ class Recipes extends React.Component {
 
   navigateToRecipe(key) {
     this.props.navigation.navigate('Recipe', { id: key });
+    this.props.setActiveRecipeRow(null);
   }
 
   onSwipeOpen(rowId, direction) {
