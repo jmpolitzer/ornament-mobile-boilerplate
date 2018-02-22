@@ -14,6 +14,13 @@ export function clearSelectedRecipe() {
   }
 }
 
+export function setActiveRecipeRow(rowId) {
+  return {
+    type: Constants.SET_ACTIVE_RECIPE_ROW,
+    activeRecipeRow: rowId
+  }
+}
+
 export function addRecipe(values) {
   firestore.collection('recipes').add({
     name: values.name,

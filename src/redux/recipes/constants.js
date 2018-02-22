@@ -1,5 +1,6 @@
 export const IS_FETCHING_RECIPES = 'recipes/IS_FETCHING_RECIPES';
 export const CLEAR_SELECTED_RECIPE = 'recipes/CLEAR_SELECTED_RECIPE';
+export const SET_ACTIVE_RECIPE_ROW = 'recipes/SET_ACTIVE_RECIPE_ROW';
 export const ADD_RECIPE = 'recipes/ADD_RECIPE';
 export const FETCH_RECIPE = 'recipes/FETCH_RECIPE';
 export const UPDATE_RECIPE = 'recipes/UPDATE_RECIPE';

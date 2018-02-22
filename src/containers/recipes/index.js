@@ -5,7 +5,7 @@ import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import CreateRecipeForm from './createRecipeForm';
-import { addRecipe, handleRecipesData, showRecipesLoading } from '../../redux/recipes/actions';
+import { addRecipe, handleRecipesData, showRecipesLoading, setActiveRecipeRow } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';
 
 class Recipes extends React.Component {
@@ -14,8 +14,11 @@ class Recipes extends React.Component {
     this.ref = firestore.collection('recipes');
     this.unsubscribe = null;
     this.addRecipe = this.addRecipe.bind(this);
+    this.deleteRecipe = this.deleteRecipe.bind(this);
     this.handleRecipesData = this.handleRecipesData.bind(this);
     this.navigateToRecipe = this.navigateToRecipe.bind(this);
+    this.onSwipeOpen = this.onSwipeOpen.bind(this);
+    this.onSwipeClose = this.onSwipeClose.bind(this);
   }
 
   componentWillMount() {
@@ -36,6 +39,10 @@ class Recipes extends React.Component {
     Keyboard.dismiss();
   }
 
+  deleteRecipe() {
+    console.log('deleting recipe at row ', this.props.activeRecipeRow);
+  }
+
   handleRecipesData(snapshot) {
     this.props.handleRecipesData(snapshot);
   }
@@ -44,11 +51,22 @@ class Recipes extends React.Component {
     this.props.navigation.navigate('Recipe', { id: key });
   }
 
+  onSwipeOpen(rowId, direction) {
+    this.props.setActiveRecipeRow(rowId);
+  }
+
+  onSwipeClose(rowId, direction) {
+    if(rowId === this.props.activeRecipeRow && typeof direction !== 'undefined') {
+      this.props.setActiveRecipeRow(null);
+    }
+  }
+
   render() {
     const swipeoutBtns = [
       {
         text: 'Delete',
         type: 'delete',
+        onPress: () => this.deleteRecipe()
       }
     ];
 
@@ -62,14 +80,22 @@ class Recipes extends React.Component {
           (!this.props.recipeList.length ? <Text>You do not currently have any recipes.</Text> :
           <List>
             <FlatList data={this.props.recipeList}
-                      renderItem={({item}) => <Swipeout right={swipeoutBtns}
-                                                        onOpen={(sectionId, rowId, direction) => {
-                                                          console.log(sectionId, rowId, direction, item);
-                                                        }}>
-                                                <ListItem key={item.key}
-                                                          title={`${item.name}`}
-                                                          onPress={() => this.navigateToRecipe(item.key)} />
-                                              </Swipeout>} />
+              extraData={this.props.activeRecipeRow}
+              renderItem={({item, index}) =>
+                <Swipeout right={swipeoutBtns}
+                  rowId={index}
+                  autoClose={true}
+                  close={index !== this.props.activeRecipeRow}
+                  onOpen={(sectionId, rowId, direction) => {
+                    this.onSwipeOpen(index, direction);
+                  }}
+                  onClose={(sectionId, rowId, direction) => {
+                    this.onSwipeClose(index, direction);
+                  }}>
+                    <ListItem key={item.key}
+                              title={`${item.name}`}
+                              onPress={() => this.navigateToRecipe(item.key)} />
+                  </Swipeout>} />
           </List>)}
         </View>
       </View>
@@ -88,14 +114,16 @@ const mapStateToProps = state => {
   return {
     isFetchingRecipes: state.recipes.isFetchingRecipes,
     recipeList: state.recipes.recipeList,
-    createRecipeForm: state.form.createRecipeForm
+    createRecipeForm: state.form.createRecipeForm,
+    activeRecipeRow: state.recipes.activeRecipeRow
   };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   showRecipesLoading,
   addRecipe,
-  handleRecipesData
+  handleRecipesData,
+  setActiveRecipeRow
 }, dispatch);
 
 export default connect(

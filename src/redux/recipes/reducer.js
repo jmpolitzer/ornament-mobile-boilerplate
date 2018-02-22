@@ -3,7 +3,8 @@ import * as Constants from './constants';
 const initialState = {
   isFetchingRecipes: false,
   recipeList: [],
-  recipe: null
+  recipe: null,
+  activeRecipeRow: null
 };
 
 export default (state = initialState, action) => {
@@ -18,6 +19,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         recipe: null
+      }
+
+    case Constants.SET_ACTIVE_RECIPE_ROW:
+      return {
+        ...state,
+        activeRecipeRow: action.activeRecipeRow
       }
 
     case Constants.ADD_RECIPE_SUCCESS:
