@@ -1,7 +1,9 @@
 import React from 'react';
-import { ActivityIndicator, StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import R from 'ramda';
 // import {  } from '../../redux/recipes/actions';
 // import { firestore } from '../../firebase';
 
@@ -11,17 +13,28 @@ class EditRecipe extends React.Component {
   }
 
   componentWillMount() {
+    this.expandRecipeProps = this.expandRecipeProps.bind(this);
+  }
 
+  expandRecipeProps() {
+    const strippedRecipe = (R.omit(['doc', 'key'], this.props.recipe));
+
+    return Object.keys(strippedRecipe).map((key, index) => {
+      return { prop: strippedRecipe[key], key: index };
+    });
   }
 
   render() {
     return(
       <View style={styles.container}>
-        {!this.props.recipe ? <ActivityIndicator /> :
         <View>
-          <Text>Name: {this.props.recipe.name}</Text>
-          <Text>Duration: {this.props.recipe.duration}</Text>
-        </View>}
+          <List>
+            <FlatList data={this.expandRecipeProps()}
+              renderItem={({item}) =>
+                    <ListItem title={item.prop}
+                              onPress={() => console.log('bout to edit ', item.prop)} />} />
+          </List>
+        </View>
       </View>
     );
   }

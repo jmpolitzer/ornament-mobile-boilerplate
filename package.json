@@ -23,6 +23,7 @@
     "@firebase/app": "^0.1.9",
     "@firebase/firestore": "^0.1.4",
     "expo": "^21.0.3",
+    "ramda": "^0.25.0",
     "react": "16.0.0-alpha.12",
     "react-native": "^0.48.4",
     "react-native-elements": "^0.17.0",

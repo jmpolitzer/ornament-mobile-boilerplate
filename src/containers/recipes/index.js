@@ -95,8 +95,7 @@ class Recipes extends React.Component {
                   onClose={(sectionId, rowId, direction) => {
                     this.onSwipeClose(item.key, direction);
                   }}>
-                    <ListItem key={item.key}
-                              title={`${item.name}`}
+                    <ListItem title={`${item.name}`}
                               onPress={() => this.navigateToRecipe(item)} />
                   </Swipeout>} />
           </List>)}
