@@ -39,6 +39,14 @@ export function addRecipe(values) {
   }
 }
 
+export function updateRecipe(id, values) {
+  console.log('ID:', id, values);
+
+  return {
+    type: Constants.UPDATE_RECIPE
+  }
+}
+
 export function deleteRecipe(id) {
   firestore.collection('recipes').doc(id).delete();
 

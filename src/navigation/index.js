@@ -4,7 +4,8 @@ import { StackNavigator } from 'react-navigation';
 import Home from '../containers/home';
 import Recipes from '../containers/recipes';
 import Recipe from '../containers/recipes/recipe';
-import EditRecipe from '../containers/recipes/editRecipe';
+import UpdateRecipe from '../containers/recipes/updateRecipe';
+import UpdateRecipeProp from '../containers/recipes/updateRecipeProp';
 import Counter from '../containers/counter';
 
 export const RootNavigator = StackNavigator({
@@ -20,13 +21,17 @@ export const RootNavigator = StackNavigator({
     navigationOptions: ({ navigation }) => ({
       headerRight: <Button title='Edit'
                            onPress={() => {
-                             navigation.navigate('EditRecipe', { id: navigation.state.params.id })
+                             navigation.navigate('UpdateRecipe', { id: navigation.state.params.id })
                            }}/>
     })
   },
-  EditRecipe: {
-    screen: EditRecipe,
-    path: 'recipes/:id/edit'
+  UpdateRecipe: {
+    screen: UpdateRecipe,
+    path: 'recipes/:id/update'
+  },
+  UpdateRecipeProp: {
+    screen: UpdateRecipeProp,
+    path: 'recipes/:id/update/:prop'
   },
   Counter: {
     screen: Counter

@@ -7,21 +7,26 @@ import R from 'ramda';
 // import {  } from '../../redux/recipes/actions';
 // import { firestore } from '../../firebase';
 
-class EditRecipe extends React.Component {
+class UpdateRecipe extends React.Component {
   constructor() {
     super();
   }
 
   componentWillMount() {
     this.expandRecipeProps = this.expandRecipeProps.bind(this);
+    this.navigateToEditRecipeProp = this.navigateToEditRecipeProp.bind(this);
   }
 
   expandRecipeProps() {
     const strippedRecipe = (R.omit(['doc', 'key'], this.props.recipe));
 
     return Object.keys(strippedRecipe).map((key, index) => {
-      return { prop: strippedRecipe[key], key: index };
+      return { prop: strippedRecipe[key], propKey: key, key: index };
     });
+  }
+
+  navigateToEditRecipeProp(prop) {
+    this.props.navigation.navigate('UpdateRecipeProp', { id: prop.key, prop: prop.propKey });
   }
 
   render() {
@@ -32,7 +37,7 @@ class EditRecipe extends React.Component {
             <FlatList data={this.expandRecipeProps()}
               renderItem={({item}) =>
                     <ListItem title={item.prop}
-                              onPress={() => console.log('bout to edit ', item.prop)} />} />
+                              onPress={() => this.navigateToEditRecipeProp(item)} />} />
           </List>
         </View>
       </View>
@@ -53,11 +58,11 @@ const mapStateToProps = state => {
   };
 }
 
-const mapDispatchToProps = dispatch => bindActionCreators({
-
-}, dispatch);
+// const mapDispatchToProps = dispatch => bindActionCreators({
+//
+// }, dispatch);
 
 export default connect(
   mapStateToProps,
-  mapDispatchToProps
-)(EditRecipe);
+  // mapDispatchToProps
+)(UpdateRecipe);
