@@ -5,7 +5,6 @@ import { bindActionCreators } from 'redux';
 import R from 'ramda';
 import UpdateRecipeForm from './updateRecipeForm';
 import { updateRecipe } from '../../redux/recipes/actions';
-// import { firestore } from '../../firebase';
 
 class UpdateRecipeProp extends React.Component {
   constructor() {
