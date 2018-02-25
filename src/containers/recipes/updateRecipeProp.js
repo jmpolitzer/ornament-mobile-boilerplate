@@ -18,6 +18,7 @@ class UpdateRecipeProp extends React.Component {
 
   updateRecipe() {
     this.props.updateRecipe(this.props.recipe.key, this.props.updateRecipeForm);
+    this.props.navigation.goBack();
   }
 
   render() {

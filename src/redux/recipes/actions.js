@@ -1,5 +1,6 @@
 import { firestore } from '../../firebase';
 import * as Constants from './constants';
+const model = 'recipes';
 
 export function showRecipesLoading(bool) {
   return {
@@ -12,7 +13,7 @@ export function setActiveRecipe(recipe) {
   return {
       type: Constants.SET_ACTIVE_RECIPE,
       recipe
-    }
+  }
 }
 
 export function setActiveRecipeRow(rowId) {
@@ -29,7 +30,7 @@ export function clearActiveRecipe() {
 }
 
 export function addRecipe(values) {
-  firestore.collection('recipes').add({
+  firestore.collection(model).add({
     name: values.name,
     duration: values.duration
   });
@@ -39,8 +40,8 @@ export function addRecipe(values) {
   }
 }
 
-export function updateRecipe(id, values) {
-  console.log('ID:', id, values);
+export function updateRecipe(id, data) {
+  firestore.collection(model).doc(id).update(data.values);
 
   return {
     type: Constants.UPDATE_RECIPE
@@ -48,7 +49,7 @@ export function updateRecipe(id, values) {
 }
 
 export function deleteRecipe(id) {
-  firestore.collection('recipes').doc(id).delete();
+  firestore.collection(model).doc(id).delete();
 
   return {
     type: Constants.DELETE_RECIPE
@@ -61,14 +62,7 @@ export function handleRecipesData(snapshot) {
     const recipes = [];
 
     snapshot.forEach((doc) => {
-      const { name, duration } = doc.data();
-
-      recipes.push({
-        key: doc.id,
-        doc,
-        name,
-        duration
-      });
+      recipes.push(packageRecipe(doc));
     });
 
     if(!docLength || docLength > 1) {
@@ -80,6 +74,7 @@ export function handleRecipesData(snapshot) {
             dispatch(addRecipeSuccess(recipes));
             break;
           case 'modified':
+            dispatch(setActiveRecipe(packageRecipe(change.doc)))
             dispatch(updateRecipeSuccess(recipes));
             break;
           case 'removed':
@@ -117,4 +112,15 @@ function deleteRecipeSuccess(recipes) {
     type: Constants.DELETE_RECIPE_SUCCESS,
     recipes
   }
+}
+
+function packageRecipe(doc) {
+  const { name, duration } = doc.data();
+
+  return {
+    key: doc.id,
+    doc,
+    name,
+    duration
+  };
 }
