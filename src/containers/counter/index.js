@@ -32,9 +32,6 @@ class Counter extends React.Component {
           <Button title='increment' onPress={this.increment} />
           <Button title='decrement' onPress={this.decrement} />
         </View>
-        <View>
-          <Button title='geaux home' onPress={() => this.props.navigation.navigate('Home')} />
-        </View>
       </View>
     );
   }

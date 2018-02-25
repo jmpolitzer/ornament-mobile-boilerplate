@@ -1,11 +1,19 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import thunk from 'redux-thunk';
 import rootReducer from './redux/reducers';
 
 const initialState = {};
 const enhancers = [];
+
+const navigation = createReactNavigationReduxMiddleware(
+  'root',
+  state => state.navigation
+);
+
 const middleware = [
-  thunk
+  thunk,
+  navigation
 ];
 
 const composedEnhancers = compose(
