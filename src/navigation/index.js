@@ -1,6 +1,9 @@
 import React from 'react';
 import { Button } from 'react-native';
 import { StackNavigator } from 'react-navigation';
+import SignIn from '../auth/signIn';
+import SignUp from '../auth/signUp';
+import SignedOut from '../auth/signedOut';
 import Home from '../containers/home';
 import Recipes from '../containers/recipes';
 import Recipe from '../containers/recipes/recipe';
