@@ -5,7 +5,7 @@ import authReducer from './auth/reducer';
 import recipesReducer from './recipes/reducer';
 import counterReducer from './counter/reducer';
 import { ADD_RECIPE, UPDATE_RECIPE } from './recipes/constants';
-import { SIGN_IN } from './auth/constants';
+import { SIGN_IN, SIGN_UP } from './auth/constants';
 
 export default combineReducers({
   form: formReducer.plugin({
@@ -30,6 +30,15 @@ export default combineReducers({
     signInForm: (state, action) => {
       switch(action.type) {
         case SIGN_IN:
+          return undefined;
+
+        default:
+          return state;
+      }
+    },
+    signUpForm: (state, action) => {
+      switch(action.type) {
+        case SIGN_UP:
           return undefined;
 
         default:

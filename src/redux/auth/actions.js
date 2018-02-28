@@ -11,9 +11,24 @@ export function signIn(credentials) {
   }
 }
 
+export function signUp(credentials) {
+  console.log('signing up!', credentials);
+
+  return dispatch => {
+    dispatch(clearSignUpForm());
+    dispatch(setSigningInOrSigningUpState());
+  }
+}
+
 function clearSignInForm() {
   return {
     type: Constants.SIGN_IN
+  }
+}
+
+function clearSignUpForm() {
+  return {
+    type: Constants.SIGN_UP
   }
 }
 
