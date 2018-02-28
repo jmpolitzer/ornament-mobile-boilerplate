@@ -1,19 +1,19 @@
 import React from 'react';
-import { TabNavigator } from 'react-navigation';
-// import Home from '../containers/home';
-import RecipesStack from './recipesStack';
+import { TabNavigator, StackNavigator } from 'react-navigation';
+import { RecipesStack } from './recipesStack';
 import Counter from '../containers/counter';
 
-console.log(RecipesStack);
 
-export const SignedIn = TabNavigator({
-  // Home: {
-  //   screen: Home
-  // },
-  Recipes: {
+export const SignedInTabs = TabNavigator({
+  RecipesStack: {
     screen: RecipesStack
   },
-  Counter: {
-    screen: Counter
+  /* Below is a messy implementation. Only used for stubbing purposes. */ 
+  CounterStack: {
+    screen: StackNavigator({
+      Counter: {
+        screen: Counter
+      }
+    })
   }
 });

@@ -1,9 +1,13 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import SignedIn from './signedIn';
+import { SignedInTabs } from './signedIn';
 
 export const RootNavigator = StackNavigator({
   SignedIn: {
-    screen: SignedIn
+    screen: SignedInTabs
   }
+},
+{
+  headerMode: 'none',
+  mode: 'modal'
 });
