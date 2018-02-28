@@ -5,7 +5,7 @@ const initialState = RootNavigator.router.getStateForAction(NavigationActions.re
   index: 0,
   actions: [
     NavigationActions.navigate({
-      routeName: 'SignedIn'
+      routeName: 'SignedOut'
     })
   ]
 }));
