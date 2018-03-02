@@ -1,18 +1,4 @@
-import { fireauth } from '../../firebase';
 import * as Constants from './constants';
-
-export function verifyAuth() {
-  return dispatch => {
-    fireauth.onAuthStateChanged((user) => {
-      if(user) {
-        dispatch(setSignedInUser(user));
-        dispatch(setSigningInOrSigningUpState());
-      } else {
-        /* TODO: Logout */
-      }
-    });
-  }
-}
 
 export function signIn(credentials) {
   console.log('signing in!', credentials);
@@ -44,7 +30,21 @@ export function signUp(credentials) {
 
   return dispatch => {
     dispatch(clearSignUpForm());
-    dispatch(setSigningInOrSigningUpState());
+    dispatch(setSigningInOrSigningUpState(true));
+  }
+}
+
+export function setSigningInOrSigningUpState(bool) {
+  return {
+    type: Constants.IS_SIGNING_IN_OR_SIGNING_UP,
+    isSigningInOrSigningUp: bool
+  }
+}
+
+export function setSignedInUser(signedInUser) {
+  return {
+    type: Constants.SET_SIGNED_IN_USER,
+    signedInUser
   }
 }
 
@@ -57,19 +57,5 @@ function clearSignInForm() {
 function clearSignUpForm() {
   return {
     type: Constants.SIGN_UP
-  }
-}
-
-function setSigningInOrSigningUpState() {
-  return {
-    type: Constants.IS_SIGNING_IN_OR_SIGNING_UP,
-    isSigningInOrSigningUp: true
-  }
-}
-
-function setSignedInUser(signedInUser) {
-  return {
-    type: Constants.SET_SIGNED_IN_USER,
-    signedInUser
   }
 }
