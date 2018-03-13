@@ -1,4 +1,5 @@
 import * as Constants from './constants';
+import { fireauth } from '../../firebase';
 
 export function signIn(credentials) {
   console.log('signing in!', credentials);
@@ -14,7 +15,7 @@ export function signUp(credentials) {
   TODO: Diplay Errors To User
   TODO: Confirm password match
   TODO: Hide password in form fields
-  TODO: Persist new user in firebase
+  TODO: Implement signIn and signOut functionality
   TODO: Move firebase methods inside dispatch
   */
 

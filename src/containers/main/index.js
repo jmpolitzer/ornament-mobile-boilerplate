@@ -43,7 +43,8 @@ class Main extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.navigation
+    navigation: state.navigation,
+    signedInUser: state.auth.signedInUser
   }
 }
 

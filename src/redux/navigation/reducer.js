@@ -5,13 +5,13 @@ const initialState = RootNavigator.router.getStateForAction(NavigationActions.re
   index: 0,
   actions: [
     NavigationActions.navigate({
-      routeName: 'SignedOut'
+      routeName: 'Splash'
     })
   ]
 }));
 
 export default (state = initialState, action) => {
-    const nextState = RootNavigator.router.getStateForAction(action, state);
+  const nextState = RootNavigator.router.getStateForAction(action, state);
 
-    return nextState || state;
+  return nextState || state;
 }
