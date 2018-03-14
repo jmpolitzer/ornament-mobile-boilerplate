@@ -1,16 +1,16 @@
 import * as Constants from './constants';
 
 const initialState = {
-  isSigningInOrSigningUp: false,
+  fireauthIsInit: false,
   signedInUser: null
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case Constants.IS_SIGNING_IN_OR_SIGNING_UP:
+    case Constants.SET_FIREAUTH_INIT:
       return {
         ...state,
-        isSigningInOrSigningUp: action.isSigningInOrSigningUp
+        fireauthIsInit: action.fireauthIsInit
       }
 
     case Constants.SET_SIGNED_IN_USER:

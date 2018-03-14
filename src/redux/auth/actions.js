@@ -6,7 +6,6 @@ export function signIn(credentials) {
 
   return dispatch => {
     dispatch(clearSignInForm());
-    dispatch(setSigningInOrSigningUpState());
   }
 }
 
@@ -17,6 +16,7 @@ export function signUp(credentials) {
   TODO: Hide password in form fields
   TODO: Implement signIn and signOut functionality
   TODO: Move firebase methods inside dispatch
+  TODO: Add success/failure actions
   */
 
   const { email, password } = credentials;
@@ -31,14 +31,25 @@ export function signUp(credentials) {
 
   return dispatch => {
     dispatch(clearSignUpForm());
-    dispatch(setSigningInOrSigningUpState(true));
   }
 }
 
-export function setSigningInOrSigningUpState(bool) {
+export function signOut() {
+  fireauth.signOut().then((data) => {
+    console.log('sign out success', data);
+  }).catch((error) => {
+    console.log('error signing out', error);
+  });
+
+  return dispatch => {
+    dispatch(setFireauthInit(true));
+  }
+}
+
+export function setFireauthInit(bool) {
   return {
-    type: Constants.IS_SIGNING_IN_OR_SIGNING_UP,
-    isSigningInOrSigningUp: bool
+    type: Constants.SET_FIREAUTH_INIT,
+    fireauthIsInit: bool
   }
 }
 

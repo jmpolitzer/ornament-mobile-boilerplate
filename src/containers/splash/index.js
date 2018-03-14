@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    signedInUser: state.auth.signedInUser
+    signedInUser: state.auth.signedInUser,
+    fireauthIsInit: state.auth.fireauthIsInit
   }
 }
 

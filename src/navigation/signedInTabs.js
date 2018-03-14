@@ -1,18 +1,17 @@
 import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { RecipesStack } from './recipesStack';
-import Counter from '../containers/counter';
+import Profile from '../containers/profile';
 
 
 export const SignedInTabs = TabNavigator({
   RecipesStack: {
     screen: RecipesStack
   },
-  /* Below is a messy implementation. Only used for stubbing purposes. */ 
-  CounterStack: {
+  ProfileStack: {
     screen: StackNavigator({
-      Counter: {
-        screen: Counter
+      Profile: {
+        screen: Profile
       }
     })
   }
