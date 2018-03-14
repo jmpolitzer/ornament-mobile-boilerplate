@@ -6,7 +6,7 @@ import { ReduxedFormInput } from '../../helpers/forms';
 
 let SignUpForm = props => {
   const { handleSubmit, fields} = props;
-
+  
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
       <View>
@@ -20,11 +20,11 @@ let SignUpForm = props => {
                  component={ReduxedFormInput} />
         <FormLabel>Password</FormLabel>
           <Field name={'password'}
-                 type='text'
+                 type='password'
                  component={ReduxedFormInput} />
         <FormLabel>Confirm Password</FormLabel>
           <Field name={'confirm-password'}
-                 type='text'
+                 type='password'
                  component={ReduxedFormInput} />
       </View>
       <Button title='Sign Up' onPress={handleSubmit}/>

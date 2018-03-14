@@ -20,11 +20,12 @@ export function signUp(credentials) {
   /*
   TODO: Diplay Errors To User
   TODO: Confirm password match
-  TODO: Hide password in form fields
   TODO: Implement signIn functionality
   TODO: Move firebase methods inside dispatch
   TODO: Add success/failure actions
-  TODO: Create user model and add to profile screen
+  TODO: Add displayName and PhotoUrl to user creation
+  TODO: Add email verification, password reset, etc.
+  TODO: Move signIn and signUp to one screen
   */
 
   const { email, password } = credentials;

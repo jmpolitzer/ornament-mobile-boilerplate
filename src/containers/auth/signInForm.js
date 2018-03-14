@@ -16,7 +16,7 @@ let SignInForm = props => {
                  component={ReduxedFormInput} />
         <FormLabel>Password</FormLabel>
           <Field name={'password'}
-                 type='text'
+                 type='password'
                  component={ReduxedFormInput} />
       </View>
       <Button title='Sign In' onPress={handleSubmit}/>
