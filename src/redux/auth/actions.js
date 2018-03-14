@@ -2,7 +2,14 @@ import * as Constants from './constants';
 import { fireauth } from '../../firebase';
 
 export function signIn(credentials) {
-  console.log('signing in!', credentials);
+  const { email, password } = credentials;
+
+  fireauth.signInWithEmailAndPassword(email, password)
+  .then((user) => {
+    console.log('user signed in', user);
+  }).catch((error) => {
+    console.log('error signing in user')
+  });
 
   return dispatch => {
     dispatch(clearSignInForm());
@@ -14,19 +21,20 @@ export function signUp(credentials) {
   TODO: Diplay Errors To User
   TODO: Confirm password match
   TODO: Hide password in form fields
-  TODO: Implement signIn and signOut functionality
+  TODO: Implement signIn functionality
   TODO: Move firebase methods inside dispatch
   TODO: Add success/failure actions
+  TODO: Create user model and add to profile screen
   */
 
   const { email, password } = credentials;
 
   fireauth.createUserWithEmailAndPassword(email, password)
   .then((user) => {
-    console.log('created new user!', user);
+    console.log('new user signed up', user);
   })
   .catch((error) => {
-    console.log('error creating new user', error);
+    console.log('error signing up new user', error);
   });
 
   return dispatch => {
