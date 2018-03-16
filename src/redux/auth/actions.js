@@ -1,44 +1,44 @@
 import * as Constants from './constants';
+import { NavigationActions } from 'react-navigation';
 import { fireauth } from '../../firebase';
+import { handleFireauthError } from '../../helpers/forms';
+import { SubmissionError } from 'redux-form';
 
 export function signIn(credentials) {
-  const { email, password } = credentials;
-
-  fireauth.signInWithEmailAndPassword(email, password)
-  .then((user) => {
-    console.log('user signed in', user);
-  }).catch((error) => {
-    console.log('error signing in user', error)
-  });
-
   return dispatch => {
+    const { email, password } = credentials;
+
+    return fireauth.signInWithEmailAndPassword(email, password)
+    .then((user) => {
+      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+    }).catch((error) => {
+      handleFireauthError(error);
+    });
+
     dispatch(clearSignInForm());
   }
 }
 
 export function signUp(credentials) {
   /*
-  TODO: Diplay Errors To User
   TODO: Confirm password match
-  TODO: Implement signIn functionality
-  TODO: Move firebase methods inside dispatch
+  TODO: Move firebase logout method inside dispatch
   TODO: Add success/failure actions
   TODO: Add displayName and PhotoUrl to user creation
   TODO: Add email verification, password reset, etc.
   TODO: Move signIn and signUp to one screen
   */
 
-  const { email, password } = credentials;
-
-  fireauth.createUserWithEmailAndPassword(email, password)
-  .then((user) => {
-    console.log('new user signed up', user);
-  })
-  .catch((error) => {
-    console.log('error signing up new user', error);
-  });
-
   return dispatch => {
+    const { email, password } = credentials;
+
+    return fireauth.createUserWithEmailAndPassword(email, password)
+    .then((user) => {
+      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+    }).catch((error) => {
+      handleFireauthError(error);
+    });
+
     dispatch(clearSignUpForm());
   }
 }
@@ -51,6 +51,7 @@ export function signOut() {
   });
 
   return dispatch => {
+    /* TODO: Set up SIGN_OUT action */
     dispatch(setFireauthInit(true));
   }
 }

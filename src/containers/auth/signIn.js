@@ -11,6 +11,7 @@ import R from 'ramda';
 class SignIn extends React.Component {
   constructor() {
     super();
+
     this.signIn = this.signIn.bind(this);
   }
 
@@ -21,8 +22,10 @@ class SignIn extends React.Component {
     if(!R.isEmpty(errors)) {
       throw new SubmissionError(errors);
     } else {
-      this.props.navigation.navigate('Splash');
-      this.props.signIn(values);
+      return this.props.signIn(values)
+      .catch((error) => {
+        throw new SubmissionError(error.errors);
+      });
     }
   }
 

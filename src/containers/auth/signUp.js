@@ -22,8 +22,10 @@ class SignUp extends React.Component {
     if(!R.isEmpty(errors)) {
       throw new SubmissionError(errors);
     } else {
-      this.props.navigation.navigate('Splash');
-      this.props.signUp(values);
+      return this.props.signUp(values)
+      .catch((error) => {
+        throw new SubmissionError(error.errors);
+      });
     }
   }
 

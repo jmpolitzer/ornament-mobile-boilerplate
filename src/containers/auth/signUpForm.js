@@ -5,7 +5,7 @@ import { FormLabel, Button } from 'react-native-elements';
 import { ReduxedFormInput } from '../../helpers/forms';
 
 let SignUpForm = props => {
-  const { handleSubmit, fields } = props;
+  const { handleSubmit } = props;
 
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
@@ -23,7 +23,7 @@ let SignUpForm = props => {
                  type='password'
                  component={ReduxedFormInput} />
         <FormLabel>Confirm Password</FormLabel>
-          <Field name={'confirm-password'}
+          <Field name={'confirmPassword'}
                  type='password'
                  component={ReduxedFormInput} />
       </View>
