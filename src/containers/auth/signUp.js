@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { SubmissionError } from 'redux-form';
 import { signUp } from '../../redux/auth/actions';
 import SignUpForm from './signUpForm';
+import { validateAuthForm } from '../../helpers/forms';
+import R from 'ramda';
 
 class SignUp extends React.Component {
   constructor() {
@@ -12,9 +15,16 @@ class SignUp extends React.Component {
     this.signUp = this.signUp.bind(this);
   }
 
-  signUp(values) {
-    this.props.navigation.navigate('Splash');
-    this.props.signUp(values);
+  signUp(values, dispatch, props) {
+    const fields = Object.keys(props.registeredFields);
+    const errors = validateAuthForm(fields, values);
+
+    if(!R.isEmpty(errors)) {
+      throw new SubmissionError(errors);
+    } else {
+      this.props.navigation.navigate('Splash');
+      this.props.signUp(values);
+    }
   }
 
   render() {

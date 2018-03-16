@@ -8,7 +8,7 @@ export function signIn(credentials) {
   .then((user) => {
     console.log('user signed in', user);
   }).catch((error) => {
-    console.log('error signing in user')
+    console.log('error signing in user', error)
   });
 
   return dispatch => {

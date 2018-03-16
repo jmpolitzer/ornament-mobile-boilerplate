@@ -5,7 +5,7 @@ import { FormLabel, Button } from 'react-native-elements';
 import { ReduxedFormInput } from '../../helpers/forms';
 
 let SignInForm = props => {
-  const { handleSubmit, fields} = props;
+  const { handleSubmit, fields } = props;
 
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>

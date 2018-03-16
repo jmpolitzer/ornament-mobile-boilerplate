@@ -2,8 +2,11 @@ import React from 'react';
 import { StyleSheet, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
+import { SubmissionError } from 'redux-form';
 import { signIn } from '../../redux/auth/actions';
 import SignInForm from './signInForm';
+import { validateAuthForm } from '../../helpers/forms';
+import R from 'ramda';
 
 class SignIn extends React.Component {
   constructor() {
@@ -11,9 +14,16 @@ class SignIn extends React.Component {
     this.signIn = this.signIn.bind(this);
   }
 
-  signIn(values) {
-    this.props.navigation.navigate('Splash');
-    this.props.signIn(values);
+  signIn(values, dispatch, props) {
+    const fields = Object.keys(props.registeredFields);
+    const errors = validateAuthForm(fields, values);
+
+    if(!R.isEmpty(errors)) {
+      throw new SubmissionError(errors);
+    } else {
+      this.props.navigation.navigate('Splash');
+      this.props.signIn(values);
+    }
   }
 
   render() {
