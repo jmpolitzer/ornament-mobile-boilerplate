@@ -21,7 +21,6 @@ export function signIn(credentials) {
 
 export function signUp(credentials) {
   /*
-  TODO: Confirm password match
   TODO: Move firebase logout method inside dispatch
   TODO: Add success/failure actions
   TODO: Add displayName and PhotoUrl to user creation

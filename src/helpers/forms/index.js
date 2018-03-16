@@ -2,6 +2,7 @@ import React from 'react';
 import { View } from 'react-native';
 import { FormInput, FormValidationMessage } from 'react-native-elements';
 import { SubmissionError } from 'redux-form';
+import R from 'ramda';
 
 export const ReduxedFormInput = props => {
   const { input, type, meta: { touched, error }, ...inputProps } = props;
@@ -22,10 +23,22 @@ export const ReduxedFormInput = props => {
 
 export const validateAuthForm = (fields, values) => {
   const errors = {};
+  const isSignUpForm = (fieldNames) => {
+    return R.contains('password', fieldNames) && R.contains('confirmPassword', fieldNames);
+  }
 
   fields.forEach((field) => {
     if(!values[field]) {
       errors[field] = 'Required';
+    }
+
+    if(isSignUpForm(fields) && field === 'confirmPassword') {
+      const passwordVal = values['password'];
+      const confirmPasswordVal = values['confirmPassword'];
+
+      if((passwordVal && confirmPasswordVal) && (passwordVal !== confirmPasswordVal)) {
+        errors['confirmPassword'] = 'Passwords must match'
+      }
     }
   });
 
