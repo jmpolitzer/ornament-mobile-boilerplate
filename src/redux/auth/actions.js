@@ -21,11 +21,10 @@ export function signIn(credentials) {
 
 export function signUp(credentials) {
   /*
-  TODO: Move firebase logout method inside dispatch
-  TODO: Add success/failure actions
   TODO: Add displayName and PhotoUrl to user creation
   TODO: Add email verification, password reset, etc.
   TODO: Move signIn and signUp to one screen
+  TODO: Work on placing navigation to splash screen elsewhere
   */
 
   return dispatch => {
@@ -43,15 +42,12 @@ export function signUp(credentials) {
 }
 
 export function signOut() {
-  fireauth.signOut().then((data) => {
-    console.log('sign out success', data);
-  }).catch((error) => {
-    console.log('error signing out', error);
-  });
-
   return dispatch => {
-    /* TODO: Set up SIGN_OUT action */
-    dispatch(setFireauthInit(true));
+    fireauth.signOut().then((data) => {
+      dispatch(onSignOutSuccess());
+    }).catch((error) => {
+      dispatch(onSignOutFailure());
+    });
   }
 }
 
@@ -78,5 +74,17 @@ function clearSignInForm() {
 function clearSignUpForm() {
   return {
     type: Constants.SIGN_UP
+  }
+}
+
+function onSignOutSuccess() {
+  return {
+    type: Constants.SIGN_OUT_SUCCESS
+  }
+}
+
+function onSignOutFailure() {
+  return {
+    type: Constants.SIGN_OUT_FAILURE
   }
 }
