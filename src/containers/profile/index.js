@@ -41,6 +41,11 @@ class Profile extends React.Component {
           <Button style={styles.button} title='increment' onPress={this.increment} />
           <Button style={styles.button} title='decrement' onPress={this.decrement} />
         </View>
+        {this.props.signedInUser && <View>
+          <Text>
+            {this.props.signedInUser.displayName}
+          </Text>
+        </View>}
         <View>
           <Button style={styles.button} backgroundColor='#841584' title='Sign Out' onPress={this.signout} />
         </View>
@@ -52,7 +57,8 @@ class Profile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22
+    paddingTop: 22,
+    alignItems: 'center'
   },
   button: {
     marginTop: 5
@@ -61,7 +67,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    count: state.counter.count
+    count: state.counter.count,
+    signedInUser: state.auth.signedInUser
   };
 }
 

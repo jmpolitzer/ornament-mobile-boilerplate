@@ -4,6 +4,13 @@ import { fireauth } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
 import { SubmissionError } from 'redux-form';
 
+/*
+TODO: Add PhotoUrl to user profile
+TODO: Add email verification, password reset, etc.
+TODO: Work on placing navigation to splash screen elsewhere
+TODO: LogOut occasionally crashes
+*/
+
 export function signIn(credentials) {
   return dispatch => {
     const { email, password } = credentials;
@@ -20,18 +27,17 @@ export function signIn(credentials) {
 }
 
 export function signUp(credentials) {
-  /*
-  TODO: Add displayName and PhotoUrl to user creation
-  TODO: Add email verification, password reset, etc.
-  TODO: Work on placing navigation to splash screen elsewhere
-  */
-
   return dispatch => {
-    const { email, password } = credentials;
+    const { name, email, password } = credentials;
 
     return fireauth.createUserWithEmailAndPassword(email, password)
     .then((user) => {
       dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+
+      fireauth.currentUser.updateProfile({displayName: name})
+      .then((updatedUser) => {
+        dispatch(onSignUpSuccess());
+      });
     }).catch((error) => {
       handleFireauthError(error);
     });
@@ -80,6 +86,12 @@ function clearSignInForm() {
 function clearSignUpForm() {
   return {
     type: Constants.SIGN_UP
+  }
+}
+
+function onSignUpSuccess() {
+  return {
+    type: Constants.SIGN_UP_SUCCESS
   }
 }
 

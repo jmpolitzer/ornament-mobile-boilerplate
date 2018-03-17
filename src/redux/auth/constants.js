@@ -1,5 +1,6 @@
 export const SIGN_IN = 'auth/SIGN_IN';
 export const SIGN_UP = 'auth/SIGN_UP';
+export const SIGN_UP_SUCCESS = 'auth/SIGN_UP_SUCCESS';
 export const SIGN_OUT_SUCCESS = 'auth/SIGN_OUT_SUCCESS';
 export const SIGN_OUT_FAILURE = 'auth/SIGN_OUT_FAILURE';
 export const SET_FIREAUTH_INIT = 'auth/SET_FIREAUTH_INIT';
