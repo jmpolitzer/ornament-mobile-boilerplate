@@ -3,26 +3,27 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
-import { signIn } from '../../redux/auth/actions';
+import { signIn, signUp, setAuthType } from '../../redux/auth/actions';
 import SignInForm from './signInForm';
+import SignUpForm from './signUpForm';
 import { validateAuthForm } from '../../helpers/forms';
 import R from 'ramda';
 
-class SignIn extends React.Component {
+class Authenticate extends React.Component {
   constructor() {
     super();
 
-    this.signIn = this.signIn.bind(this);
+    this.authenticate = this.authenticate.bind(this);
   }
 
-  signIn(values, dispatch, props) {
+  authenticate(values, dispatch, props) {
     const fields = Object.keys(props.registeredFields);
     const errors = validateAuthForm(fields, values);
 
     if(!R.isEmpty(errors)) {
       throw new SubmissionError(errors);
     } else {
-      return this.props.signIn(values)
+      return this.props[this.props.authType](values)
       .catch((error) => {
         throw new SubmissionError(error.errors);
       });
@@ -30,13 +31,17 @@ class SignIn extends React.Component {
   }
 
   render() {
+    const isSignIn = this.props.authType === 'signIn';
+
     return(
       <View style={styles.container}>
-        <SignInForm onSubmit={this.signIn} />
+        {isSignIn ?
+          <SignInForm onSubmit={this.authenticate} /> :
+          <SignUpForm onSubmit={this.authenticate} />}
         <Button
           backgroundColor="transparent"
-          title="Sign Up"
-          onPress={() => this.props.navigation.navigate('SignUp')} />
+          title={isSignIn ? 'Sign Up' : 'Sign In'}
+          onPress={() => this.props.setAuthType(isSignIn ? 'signUp' : 'signIn')} />
       </View>
     );
   }
@@ -49,11 +54,19 @@ const styles = StyleSheet.create({
   }
 });
 
+const mapStateToProps = state => {
+  return {
+    authType: state.auth.authType
+  };
+}
+
 const mapDispatchToProps = dispatch => bindActionCreators({
-  signIn
+  signIn,
+  signUp,
+  setAuthType
 }, dispatch);
 
 export default connect(
-  null,
+  mapStateToProps,
   mapDispatchToProps
-)(SignIn);
+)(Authenticate);

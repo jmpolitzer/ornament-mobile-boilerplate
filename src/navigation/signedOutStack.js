@@ -1,13 +1,9 @@
 import React from 'react';
 import { StackNavigator } from 'react-navigation';
-import SignIn from '../containers/auth/signIn';
-import SignUp from '../containers/auth/signUp';
+import Authenticate from '../containers/auth';
 
 export const SignedOutStack = StackNavigator({
-  SignIn: {
-    screen: SignIn
-  },
-  SignUp: {
-    screen: SignUp
+  Authenticate: {
+    screen: Authenticate
   }
 });

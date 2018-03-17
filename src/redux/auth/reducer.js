@@ -2,7 +2,8 @@ import * as Constants from './constants';
 
 const initialState = {
   fireauthIsInit: false,
-  signedInUser: null
+  signedInUser: null,
+  authType: 'signIn'
 };
 
 export default (state = initialState, action) => {
@@ -17,6 +18,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         signedInUser: action.signedInUser
+      }
+
+    case Constants.SET_AUTH_TYPE:
+      return {
+        ...state,
+        authType: action.authType
       }
 
     default:

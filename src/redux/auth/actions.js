@@ -23,7 +23,6 @@ export function signUp(credentials) {
   /*
   TODO: Add displayName and PhotoUrl to user creation
   TODO: Add email verification, password reset, etc.
-  TODO: Move signIn and signUp to one screen
   TODO: Work on placing navigation to splash screen elsewhere
   */
 
@@ -62,6 +61,13 @@ export function setSignedInUser(signedInUser) {
   return {
     type: Constants.SET_SIGNED_IN_USER,
     signedInUser
+  }
+}
+
+export function setAuthType(authType) {
+  return {
+    type: Constants.SET_AUTH_TYPE,
+    authType
   }
 }
 

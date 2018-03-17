@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { signOut } from '../../redux/auth/actions';
+import { signOut, setAuthType } from '../../redux/auth/actions';
 import { increment, decrement } from '../../redux/counter/actions';
 
 class Profile extends React.Component {
@@ -25,6 +25,7 @@ class Profile extends React.Component {
 
   signout() {
     this.props.navigation.navigate('Splash');
+    this.props.setAuthType('signIn');
     this.props.signOut();
   }
 
@@ -67,7 +68,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   increment,
   decrement,
-  signOut
+  signOut,
+  setAuthType
 }, dispatch);
 
 export default connect(
