@@ -3,7 +3,6 @@ import { reducer as formReducer } from 'redux-form';
 import navigationReducer from './navigation/reducer';
 import authReducer from './auth/reducer';
 import recipesReducer from './recipes/reducer';
-import counterReducer from './counter/reducer';
 import { ADD_RECIPE, UPDATE_RECIPE } from './recipes/constants';
 import { SIGN_IN, SIGN_UP } from './auth/constants';
 
@@ -48,6 +47,5 @@ export default combineReducers({
   }),
   navigation: navigationReducer,
   auth: authReducer,
-  recipes: recipesReducer,
-  counter: counterReducer
+  recipes: recipesReducer
 });

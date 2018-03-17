@@ -4,13 +4,6 @@ import { fireauth } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
 import { SubmissionError } from 'redux-form';
 
-/*
-TODO: Add PhotoUrl to user profile
-TODO: Add email verification, password reset, etc.
-TODO: Work on placing navigation to splash screen elsewhere
-TODO: LogOut occasionally crashes
-*/
-
 export function signIn(credentials) {
   return dispatch => {
     const { email, password } = credentials;
