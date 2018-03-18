@@ -10,12 +10,18 @@ export function signIn(credentials) {
 
     return fireauth.signInWithEmailAndPassword(email, password)
     .then((user) => {
-      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+      const emailIsVerified = user.emailVerified;
+
+      if(emailIsVerified) {
+        dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+      } else {
+        console.log('NOTIFY USER:', 'You need to verify your email before you can sign in.');
+
+        dispatch(clearSignInForm());
+      }
     }).catch((error) => {
       handleFireauthError(error);
     });
-
-    dispatch(clearSignInForm());
   }
 }
 
@@ -25,17 +31,19 @@ export function signUp(credentials) {
 
     return fireauth.createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
-
       fireauth.currentUser.updateProfile({displayName: name})
-      .then((updatedUser) => {
-        dispatch(onSignUpSuccess());
+      .then(() => {
+        fireauth.currentUser.sendEmailVerification()
+        .then(() => {
+          console.log('NOTIFY USER:', 'Thanks for registering! Please verify your email and try signing in.');
+
+          dispatch(signOut());
+          dispatch(clearSignUpForm());
+        });
       });
     }).catch((error) => {
       handleFireauthError(error);
     });
-
-    dispatch(clearSignUpForm());
   }
 }
 
@@ -81,12 +89,6 @@ function clearSignInForm() {
 function clearSignUpForm() {
   return {
     type: Constants.SIGN_UP
-  }
-}
-
-function onSignUpSuccess() {
-  return {
-    type: Constants.SIGN_UP_SUCCESS
   }
 }
 
