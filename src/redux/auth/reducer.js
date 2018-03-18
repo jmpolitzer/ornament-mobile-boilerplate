@@ -3,7 +3,7 @@ import * as Constants from './constants';
 const initialState = {
   signedInUser: null,
   authType: 'signIn',
-  navigateFromSplash: null
+  navigateFromSplash: 'unspecified'
 };
 
 export default (state = initialState, action) => {
