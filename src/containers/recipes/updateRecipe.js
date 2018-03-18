@@ -4,8 +4,6 @@ import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import R from 'ramda';
-// import {  } from '../../redux/recipes/actions';
-// import { firestore } from '../../firebase';
 
 class UpdateRecipe extends React.Component {
   constructor() {
@@ -58,11 +56,6 @@ const mapStateToProps = state => {
   };
 }
 
-// const mapDispatchToProps = dispatch => bindActionCreators({
-//
-// }, dispatch);
-
 export default connect(
-  mapStateToProps,
-  // mapDispatchToProps
+  mapStateToProps
 )(UpdateRecipe);

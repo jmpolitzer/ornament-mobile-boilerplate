@@ -1,39 +1,20 @@
 import React from 'react';
-import { Button } from 'react-native';
-import { StackNavigator } from 'react-navigation';
-import Home from '../containers/home';
-import Recipes from '../containers/recipes';
-import Recipe from '../containers/recipes/recipe';
-import UpdateRecipe from '../containers/recipes/updateRecipe';
-import UpdateRecipeProp from '../containers/recipes/updateRecipeProp';
-import Counter from '../containers/counter';
+import { StackNavigator, SwitchNavigator } from 'react-navigation';
+import SplashScreen from '../containers/splash';
+import { SignedInTabs } from './signedInTabs';
+import { SignedOutStack } from './signedOutStack';
 
-export const RootNavigator = StackNavigator({
-  Home: {
-    screen: Home
+export const RootNavigator = SwitchNavigator({
+  Splash: {
+    screen: SplashScreen
   },
-  Recipes: {
-    screen: Recipes
+  SignedIn: {
+    screen: SignedInTabs
   },
-  Recipe: {
-    screen: Recipe,
-    path: 'recipes/:id',
-    navigationOptions: ({ navigation }) => ({
-      headerRight: <Button title='Edit'
-                           onPress={() => {
-                             navigation.navigate('UpdateRecipe', { id: navigation.state.params.id })
-                           }}/>
-    })
-  },
-  UpdateRecipe: {
-    screen: UpdateRecipe,
-    path: 'recipes/:id/update'
-  },
-  UpdateRecipeProp: {
-    screen: UpdateRecipeProp,
-    path: 'recipes/:id/update/:prop'
-  },
-  Counter: {
-    screen: Counter
+  SignedOut: {
+    screen: SignedOutStack
   }
+}, {
+  headerMode: 'none',
+  mode: 'modal'
 });
