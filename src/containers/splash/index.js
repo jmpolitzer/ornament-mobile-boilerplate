@@ -6,25 +6,14 @@ import { NavigationActions } from 'react-navigation';
 class SplashScreen extends React.Component {
   constructor() {
     super();
-
-    this.navigateTo = this.navigateTo.bind(this);
   }
 
   componentDidUpdate() {
-    if(this.props.signedInUser) {
-      this.navigateTo('SignedIn');
+    if(this.props.navigateFromSplash === 'SignedIn') {
+      this.props.navigation.navigate('SignedIn');
     } else {
-      this.navigateTo('SignedOut');
+      this.props.navigation.navigate('SignedOut');
     }
-  }
-
-  navigateTo(routeName) {
-    const resetAction = NavigationActions.reset({
-      index: 0,
-      actions: [NavigationActions.navigate({ routeName })]
-    })
-
-    this.props.navigation.dispatch(resetAction);
   }
 
   render() {
@@ -51,8 +40,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    signedInUser: state.auth.signedInUser,
-    fireauthIsInit: state.auth.fireauthIsInit
+    navigateFromSplash: state.auth.navigateFromSplash
   }
 }
 

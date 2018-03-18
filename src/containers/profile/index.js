@@ -13,9 +13,8 @@ class Profile extends React.Component {
   }
 
   signout() {
-    this.props.navigation.navigate('Splash');
-    this.props.setAuthType('signIn');
     this.props.signOut();
+    this.props.setAuthType('signIn');
   }
 
   render() {

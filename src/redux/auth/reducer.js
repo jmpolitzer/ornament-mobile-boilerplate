@@ -1,17 +1,17 @@
 import * as Constants from './constants';
 
 const initialState = {
-  fireauthIsInit: false,
   signedInUser: null,
-  authType: 'signIn'
+  authType: 'signIn',
+  navigateFromSplash: null
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case Constants.SET_FIREAUTH_INIT:
+    case Constants.SET_NAVIGATE_FROM_SPLASH:
       return {
         ...state,
-        fireauthIsInit: action.fireauthIsInit
+        navigateFromSplash: action.navigateFromSplash
       }
 
     case Constants.SET_SIGNED_IN_USER:

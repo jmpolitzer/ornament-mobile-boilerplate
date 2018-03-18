@@ -4,7 +4,7 @@ import { addNavigationHelpers } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { RootNavigator } from '../../navigation';
 import { fireauth } from '../../firebase';
-import { setFireauthInit, setSignedInUser } from '../../redux/auth/actions';
+import { navigateFromSplash, setSignedInUser } from '../../redux/auth/actions';
 
 const addListener = createReduxBoundAddListener('root');
 
@@ -19,9 +19,10 @@ class Main extends React.Component {
     this.unsubscribe = fireauth.onAuthStateChanged((user) => {
       if(user) {
         this.props.dispatch(setSignedInUser(user));
+        this.props.dispatch(navigateFromSplash('SignedIn'));
       } else {
-        this.props.dispatch(setFireauthInit(true));
         this.props.dispatch(setSignedInUser(null));
+        this.props.dispatch(navigateFromSplash('SignedOut'));
       }
     });
   }
@@ -43,8 +44,7 @@ class Main extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.navigation,
-    signedInUser: state.auth.signedInUser
+    navigation: state.navigation
   }
 }
 

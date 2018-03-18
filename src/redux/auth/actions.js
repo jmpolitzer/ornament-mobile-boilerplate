@@ -41,18 +41,13 @@ export function signUp(credentials) {
 
 export function signOut() {
   return dispatch => {
+    dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+
     fireauth.signOut().then((data) => {
       dispatch(onSignOutSuccess());
     }).catch((error) => {
       dispatch(onSignOutFailure());
     });
-  }
-}
-
-export function setFireauthInit(bool) {
-  return {
-    type: Constants.SET_FIREAUTH_INIT,
-    fireauthIsInit: bool
   }
 }
 
@@ -67,6 +62,13 @@ export function setAuthType(authType) {
   return {
     type: Constants.SET_AUTH_TYPE,
     authType
+  }
+}
+
+export function navigateFromSplash(auth) {
+  return {
+    type: Constants.SET_NAVIGATE_FROM_SPLASH,
+    navigateFromSplash: auth
   }
 }
 
