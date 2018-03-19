@@ -17,14 +17,17 @@ class Main extends React.Component {
 
   componentWillMount() {
     this.unsubscribe = fireauth.onAuthStateChanged((user) => {
-      if(!user || (user && !user.emailVerified)) {
-        const unverifiedRoute = user ? 'SignedOut' : 'unverified';
-
-        this.props.dispatch(setSignedInUser(null));
-        this.props.dispatch(navigateFromSplash(unverifiedRoute));
+      if(user) {
+        if(user.emailVerified) {
+          this.props.dispatch(setSignedInUser(user));
+          this.props.dispatch(navigateFromSplash('signedIn'));
+        } else {
+          this.props.dispatch(setSignedInUser(null));
+          this.props.dispatch(navigateFromSplash('signedOut'));
+        }
       } else {
-        this.props.dispatch(setSignedInUser(user));
-        this.props.dispatch(navigateFromSplash('SignedIn'));
+        this.props.dispatch(setSignedInUser(null));
+        this.props.dispatch(navigateFromSplash('signedOut'));
       }
     });
   }

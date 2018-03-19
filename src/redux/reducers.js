@@ -25,24 +25,6 @@ export default combineReducers({
         default:
           return state;
       }
-    },
-    signInForm: (state, action) => {
-      switch(action.type) {
-        case SIGN_IN:
-          return undefined;
-
-        default:
-          return state;
-      }
-    },
-    signUpForm: (state, action) => {
-      switch(action.type) {
-        case SIGN_UP:
-          return undefined;
-
-        default:
-          return state;
-      }
     }
   }),
   navigation: navigationReducer,

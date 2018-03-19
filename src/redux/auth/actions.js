@@ -2,7 +2,7 @@ import * as Constants from './constants';
 import { NavigationActions } from 'react-navigation';
 import { fireauth } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
-import { SubmissionError } from 'redux-form';
+import { SubmissionError, reset } from 'redux-form';
 
 export function signIn(credentials) {
   return dispatch => {
@@ -10,14 +10,11 @@ export function signIn(credentials) {
 
     return fireauth.signInWithEmailAndPassword(email, password)
     .then((user) => {
-      const emailIsVerified = user.emailVerified;
+      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
 
-      if(emailIsVerified) {
-        dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
-      } else {
-        console.log('NOTIFY USER:', 'You need to verify your email before you can sign in.');
-
-        dispatch(clearSignInForm());
+      if(!user.emailVerified) {
+        dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
+        dispatch(handleUnverifiedEmail('signInForm'));
       }
     }).catch((error) => {
       handleFireauthError(error);
@@ -33,12 +30,12 @@ export function signUp(credentials) {
     .then((user) => {
       fireauth.currentUser.updateProfile({displayName: name})
       .then(() => {
+        dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+
         fireauth.currentUser.sendEmailVerification()
         .then(() => {
-          console.log('NOTIFY USER:', 'Thanks for registering! Please verify your email and try signing in.');
-
-          dispatch(signOut());
-          dispatch(clearSignUpForm());
+          dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
+          dispatch(handleUnverifiedEmail('signUpForm'));
         });
       });
     }).catch((error) => {
@@ -56,6 +53,15 @@ export function signOut() {
     }).catch((error) => {
       dispatch(onSignOutFailure());
     });
+  }
+}
+
+export function handleUnverifiedEmail(form) {
+
+  return dispatch => {
+    console.log('NOTIFY USER:', 'Please verify your email and try signing in.');
+    fireauth.signOut();
+    dispatch(clearAuthForm(form));
   }
 }
 
@@ -80,15 +86,9 @@ export function navigateFromSplash(auth) {
   }
 }
 
-function clearSignInForm() {
-  return {
-    type: Constants.SIGN_IN
-  }
-}
-
-function clearSignUpForm() {
-  return {
-    type: Constants.SIGN_UP
+function clearAuthForm(form) {
+  return dispatch => {
+    dispatch(reset(form));
   }
 }
 

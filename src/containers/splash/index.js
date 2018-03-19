@@ -9,7 +9,7 @@ class SplashScreen extends React.Component {
   }
 
   componentDidUpdate() {
-    if(this.props.navigateFromSplash === 'SignedIn') {
+    if(this.props.navigateFromSplash === 'signedIn') {
       this.props.navigation.navigate('SignedIn');
     } else {
       this.props.navigation.navigate('SignedOut');
