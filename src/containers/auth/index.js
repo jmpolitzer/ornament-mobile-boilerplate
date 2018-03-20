@@ -3,7 +3,8 @@ import { StyleSheet, View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
-import { signIn, signUp, setAuthType } from '../../redux/auth/actions';
+import Modal from 'react-native-modal';
+import { signIn, signUp, setAuthType, toggleVerifyEmailModal } from '../../redux/auth/actions';
 import SignInForm from './signInForm';
 import SignUpForm from './signUpForm';
 import { validateAuthForm } from '../../helpers/forms';
@@ -14,6 +15,7 @@ class Authenticate extends React.Component {
     super();
 
     this.authenticate = this.authenticate.bind(this);
+    this.toggleVerifyEmailModal = this.toggleVerifyEmailModal.bind(this);
   }
 
   authenticate(values, dispatch, props) {
@@ -30,7 +32,12 @@ class Authenticate extends React.Component {
     }
   }
 
+  toggleVerifyEmailModal() {
+    this.props.toggleVerifyEmailModal()
+  }
+
   render() {
+    console.log(this.props.modalIsVisible);
     const isSignIn = this.props.authType === 'signIn';
 
     return(
@@ -42,7 +49,15 @@ class Authenticate extends React.Component {
           backgroundColor="transparent"
           title={isSignIn ? 'Sign Up' : 'Sign In'}
           onPress={() => this.props.setAuthType(isSignIn ? 'signUp' : 'signIn')} />
-      </View>
+        <Modal isVisible={this.props.modalIsVisible}>
+          <View>
+            <Text>
+              'Please verify your email first and then try signing in.'
+            </Text>
+            <Button title='OK' onPress={() => this.toggleVerifyEmailModal()} />
+          </View>
+        </Modal>
+    </View>
     );
   }
 }
@@ -56,14 +71,16 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    authType: state.auth.authType
+    authType: state.auth.authType,
+    modalIsVisible: state.auth.modalIsVisible
   };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   signIn,
   signUp,
-  setAuthType
+  setAuthType,
+  toggleVerifyEmailModal
 }, dispatch);
 
 export default connect(

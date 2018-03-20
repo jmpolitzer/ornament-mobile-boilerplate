@@ -59,9 +59,9 @@ export function signOut() {
 export function handleUnverifiedEmail(form) {
 
   return dispatch => {
-    console.log('NOTIFY USER:', 'Please verify your email and try signing in.');
     fireauth.signOut();
     dispatch(clearAuthForm(form));
+    dispatch(toggleVerifyEmailModal());
   }
 }
 
@@ -83,6 +83,12 @@ export function navigateFromSplash(auth) {
   return {
     type: Constants.SET_NAVIGATE_FROM_SPLASH,
     navigateFromSplash: auth
+  }
+}
+
+export function toggleVerifyEmailModal() {
+  return {
+    type: Constants.TOGGLE_VERIFY_EMAIL_MODAL
   }
 }
 

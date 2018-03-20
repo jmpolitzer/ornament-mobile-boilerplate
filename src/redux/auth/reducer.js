@@ -3,11 +3,19 @@ import * as Constants from './constants';
 const initialState = {
   signedInUser: null,
   authType: 'signIn',
-  navigateFromSplash: 'unspecified'
+  navigateFromSplash: 'unspecified',
+  modalIsVisible: false
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
+    case Constants.TOGGLE_VERIFY_EMAIL_MODAL:
+      console.log('reducer', action.modalIsVisible);
+      return {
+        ...state,
+        modalIsVisible: !state.modalIsVisible
+      }
+
     case Constants.SET_NAVIGATE_FROM_SPLASH:
       return {
         ...state,
