@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
@@ -16,6 +17,7 @@ class Authenticate extends React.Component {
 
     this.authenticate = this.authenticate.bind(this);
     this.toggleVerifyEmailModal = this.toggleVerifyEmailModal.bind(this);
+    this.redirectToSignIn = this.redirectToSignIn.bind(this);
   }
 
   authenticate(values, dispatch, props) {
@@ -36,8 +38,11 @@ class Authenticate extends React.Component {
     this.props.toggleVerifyEmailModal()
   }
 
+  redirectToSignIn() {
+    this.props.authType !== 'signIn' && this.props.setAuthType('signIn');
+  }
+
   render() {
-    console.log(this.props.modalIsVisible);
     const isSignIn = this.props.authType === 'signIn';
 
     return(
@@ -46,14 +51,16 @@ class Authenticate extends React.Component {
           <SignInForm onSubmit={this.authenticate} /> :
           <SignUpForm onSubmit={this.authenticate} />}
         <Button
-          backgroundColor="transparent"
+          color='blue'
+          backgroundColor='transparent'
           title={isSignIn ? 'Sign Up' : 'Sign In'}
           onPress={() => this.props.setAuthType(isSignIn ? 'signUp' : 'signIn')} />
-        <Modal isVisible={this.props.modalIsVisible}>
+        <Modal isVisible={this.props.modalIsVisible}
+               backdropColor={'white'}
+               backdropOpacity={1}
+               onModalHide={this.redirectToSignIn}>
           <View>
-            <Text>
-              'Please verify your email first and then try signing in.'
-            </Text>
+            <Text>Please verify your email first and then try signing in.</Text>
             <Button title='OK' onPress={() => this.toggleVerifyEmailModal()} />
           </View>
         </Modal>
@@ -66,6 +73,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     paddingTop: 22
+  },
+  modal: {
+    justifyContent: 'center'
   }
 });
 
