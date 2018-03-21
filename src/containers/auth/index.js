@@ -19,6 +19,7 @@ class Authenticate extends React.Component {
     this.authenticate = this.authenticate.bind(this);
     this.toggleVerifyEmailModal = this.toggleVerifyEmailModal.bind(this);
     this.redirectToSignIn = this.redirectToSignIn.bind(this);
+    this.showResetPasswordForm = this.showResetPasswordForm.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
   }
 
@@ -44,8 +45,12 @@ class Authenticate extends React.Component {
     this.props.authType !== 'signIn' && this.props.setAuthType('signIn');
   }
 
-  resetPassword(email) {
-    console.log('resetting password for', email);
+  showResetPasswordForm() {
+    console.log('show reset password form');
+  }
+
+  resetPassword(values) {
+    console.log('resetting password for', values);
   }
 
   render() {
@@ -56,7 +61,7 @@ class Authenticate extends React.Component {
         {isSignIn ?
           <SignInForm onSubmit={this.authenticate} /> :
           <SignUpForm onSubmit={this.authenticate} />}
-        {isSignIn && <PasswordResetButton reset={this.resetPassword} />}
+        {isSignIn && <PasswordResetButton reset={this.showResetPasswordForm} />}
         <SwitchAuthTypeButton switch={this.props.setAuthType} authType={isSignIn ? 'signUp' : 'signIn'} />
         <VerifyEmailNoticeModal isVisible={this.props.modalIsVisible}
                                 redirect={this.redirectToSignIn}
