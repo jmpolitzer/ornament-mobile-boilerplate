@@ -2,7 +2,7 @@ import * as Constants from './constants';
 import { NavigationActions } from 'react-navigation';
 import { fireauth } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
-import { SubmissionError, reset } from 'redux-form';
+import { reset } from 'redux-form';
 
 export function signIn(credentials) {
   return dispatch => {
@@ -14,7 +14,7 @@ export function signIn(credentials) {
 
       if(!user.emailVerified) {
         dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
-        dispatch(handleUnverifiedEmail('signInForm'));
+        dispatch(launchAuthModal('signInForm'));
       }
     }).catch((error) => {
       handleFireauthError(error);
@@ -35,7 +35,7 @@ export function signUp(credentials) {
         fireauth.currentUser.sendEmailVerification()
         .then(() => {
           dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
-          dispatch(handleUnverifiedEmail('signUpForm'));
+          dispatch(launchAuthModal('signUpForm'));
         });
       });
     }).catch((error) => {
@@ -56,12 +56,24 @@ export function signOut() {
   }
 }
 
-export function handleUnverifiedEmail(form) {
+export function resetPassword(data) {
+  const { email } = data;
 
+  return dispatch => {
+    return fireauth.sendPasswordResetEmail(email)
+    .then(() => {
+      dispatch(launchAuthModal('resetPasswordRequestForm'));
+    }).catch((error) => {
+      dispatch(handleFireauthError(error));
+    });
+  }
+}
+
+export function launchAuthModal(form) {
   return dispatch => {
     fireauth.signOut();
     dispatch(clearAuthForm(form));
-    dispatch(toggleVerifyEmailModal());
+    dispatch(toggleAuthModal());
   }
 }
 
@@ -86,9 +98,9 @@ export function navigateFromSplash(auth) {
   }
 }
 
-export function toggleVerifyEmailModal() {
+export function toggleAuthModal() {
   return {
-    type: Constants.TOGGLE_VERIFY_EMAIL_MODAL
+    type: Constants.TOGGLE_AUTH_MODAL
   }
 }
 

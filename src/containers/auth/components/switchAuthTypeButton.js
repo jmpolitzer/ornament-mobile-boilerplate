@@ -4,6 +4,18 @@ import { Button } from 'react-native-elements';
 export default class SwitchAuthTypeButton extends React.Component {
   constructor() {
     super();
+
+    this.getTitle = this.getTitle.bind(this);
+  }
+
+  getTitle() {
+    const titles = {
+      signIn: 'Sign Up',
+      signUp: 'Sign In',
+      resetPassword: 'Sign In'
+    }
+
+    return titles[this.props.authType];
   }
 
   render() {
@@ -11,8 +23,8 @@ export default class SwitchAuthTypeButton extends React.Component {
       <Button
         color='blue'
         backgroundColor='transparent'
-        title={this.props.authType ? 'Sign Up' : 'Sign In'}
-        onPress={() => this.props.switch(this.props.authType)} />
+        title={this.getTitle()}
+        onPress={() => this.props.switch(this.props.authType === 'signIn' ? 'signUp' : 'signIn')} />
     )
   }
 }

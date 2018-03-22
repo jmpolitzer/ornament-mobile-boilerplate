@@ -9,7 +9,7 @@ const initialState = {
 
 export default (state = initialState, action) => {
   switch(action.type) {
-    case Constants.TOGGLE_VERIFY_EMAIL_MODAL:
+    case Constants.TOGGLE_AUTH_MODAL:
       return {
         ...state,
         modalIsVisible: !state.modalIsVisible

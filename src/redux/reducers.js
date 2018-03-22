@@ -25,15 +25,6 @@ export default combineReducers({
         default:
           return state;
       }
-    },
-    resetPasswordRequestForm: (state, action) => {
-      switch(action.type) {
-        case AuthConstants.RESET_PASSWORD_REQUEST:
-          return undefined;
-
-        default:
-          return state;
-      }
     }
   }),
   navigation: navigationReducer,

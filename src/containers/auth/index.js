@@ -4,26 +4,27 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
 import R from 'ramda';
-import { signIn, signUp, setAuthType, toggleVerifyEmailModal } from '../../redux/auth/actions';
+import { signIn, signUp, resetPassword, setAuthType, toggleAuthModal } from '../../redux/auth/actions';
 import { validateAuthForm } from '../../helpers/forms';
 import SignInForm from './forms/signInForm';
 import SignUpForm from './forms/signUpForm';
+import ResetPasswordRequestForm from './forms/passwordResetRequestForm';
 import PasswordResetButton from './components/passwordResetButton';
 import SwitchAuthTypeButton from './components/switchAuthTypeButton';
-import VerifyEmailNoticeModal from './components/verifyEmailNoticeModal';
+import AuthModal from './components/authModal';
 
 class Authenticate extends React.Component {
   constructor() {
     super();
 
-    this.authenticate = this.authenticate.bind(this);
-    this.toggleVerifyEmailModal = this.toggleVerifyEmailModal.bind(this);
+    this.authenticateOrResetPassword = this.authenticateOrResetPassword.bind(this);
+    this.renderAuthForm = this.renderAuthForm.bind(this);
+    this.toggleAuthModal = this.toggleAuthModal.bind(this);
     this.redirectToSignIn = this.redirectToSignIn.bind(this);
     this.showResetPasswordForm = this.showResetPasswordForm.bind(this);
-    this.resetPassword = this.resetPassword.bind(this);
   }
 
-  authenticate(values, dispatch, props) {
+  authenticateOrResetPassword(values, dispatch, props) {
     const fields = Object.keys(props.registeredFields);
     const errors = validateAuthForm(fields, values);
 
@@ -37,8 +38,18 @@ class Authenticate extends React.Component {
     }
   }
 
-  toggleVerifyEmailModal() {
-    this.props.toggleVerifyEmailModal()
+  renderAuthForm(authType) {
+    const authForms = {
+      signIn: <SignInForm onSubmit={this.authenticateOrResetPassword} />,
+      signUp: <SignUpForm onSubmit={this.authenticateOrResetPassword} />,
+      resetPassword: <ResetPasswordRequestForm onSubmit={this.authenticateOrResetPassword} />
+    }
+
+    return authForms[authType];
+  }
+
+  toggleAuthModal() {
+    this.props.toggleAuthModal()
   }
 
   redirectToSignIn() {
@@ -46,26 +57,19 @@ class Authenticate extends React.Component {
   }
 
   showResetPasswordForm() {
-    console.log('show reset password form');
-  }
-
-  resetPassword(values) {
-    console.log('resetting password for', values);
+    this.props.setAuthType('resetPassword');
   }
 
   render() {
-    const isSignIn = this.props.authType === 'signIn';
-
     return(
       <View style={styles.container}>
-        {isSignIn ?
-          <SignInForm onSubmit={this.authenticate} /> :
-          <SignUpForm onSubmit={this.authenticate} />}
-        {isSignIn && <PasswordResetButton reset={this.showResetPasswordForm} />}
-        <SwitchAuthTypeButton switch={this.props.setAuthType} authType={isSignIn ? 'signUp' : 'signIn'} />
-        <VerifyEmailNoticeModal isVisible={this.props.modalIsVisible}
-                                redirect={this.redirectToSignIn}
-                                toggle={this.toggleVerifyEmailModal} />
+        {this.renderAuthForm(this.props.authType)}
+        {this.props.authType === 'signIn' && <PasswordResetButton reset={this.showResetPasswordForm} />}
+        <SwitchAuthTypeButton switch={this.props.setAuthType} authType={this.props.authType} />
+        <AuthModal isVisible={this.props.modalIsVisible}
+                   authType={this.props.authType}
+                   redirect={this.redirectToSignIn}
+                   toggle={this.toggleAuthModal} />
     </View>
     );
   }
@@ -88,8 +92,9 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   signIn,
   signUp,
+  resetPassword,
   setAuthType,
-  toggleVerifyEmailModal
+  toggleAuthModal
 }, dispatch);
 
 export default connect(
