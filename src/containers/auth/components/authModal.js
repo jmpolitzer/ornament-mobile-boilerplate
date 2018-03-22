@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { Button } from 'react-native-elements';
 import Modal from 'react-native-modal';
 
-export default class SwitchAuthTypeButton extends React.Component {
+export default class AuthModal extends React.Component {
   constructor() {
     super();
 
@@ -15,7 +15,7 @@ export default class SwitchAuthTypeButton extends React.Component {
       Since we redirect and change the authType onModalShow, we need to ignore the state
       change when the current and next isVisible prop is true. This way, we can display
       the correct modal message.
-    */ 
+    */
     return (this.props.isVisible && nextProps.isVisible) ? false : true;
   }
 
