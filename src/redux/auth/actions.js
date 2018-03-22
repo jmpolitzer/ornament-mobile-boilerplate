@@ -2,7 +2,7 @@ import * as Constants from './constants';
 import { NavigationActions } from 'react-navigation';
 import { fireauth } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
-import { SubmissionError } from 'redux-form';
+import { reset } from 'redux-form';
 
 export function signIn(credentials) {
   return dispatch => {
@@ -11,11 +11,14 @@ export function signIn(credentials) {
     return fireauth.signInWithEmailAndPassword(email, password)
     .then((user) => {
       dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+
+      if(!user.emailVerified) {
+        dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
+        dispatch(launchAuthModal('signInForm'));
+      }
     }).catch((error) => {
       handleFireauthError(error);
     });
-
-    dispatch(clearSignInForm());
   }
 }
 
@@ -25,17 +28,19 @@ export function signUp(credentials) {
 
     return fireauth.createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
-
       fireauth.currentUser.updateProfile({displayName: name})
-      .then((updatedUser) => {
-        dispatch(onSignUpSuccess());
+      .then(() => {
+        dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
+
+        fireauth.currentUser.sendEmailVerification()
+        .then(() => {
+          dispatch(NavigationActions.navigate({ routeName: 'SignedOut' }));
+          dispatch(launchAuthModal('signUpForm'));
+        });
       });
     }).catch((error) => {
       handleFireauthError(error);
     });
-
-    dispatch(clearSignUpForm());
   }
 }
 
@@ -48,6 +53,27 @@ export function signOut() {
     }).catch((error) => {
       dispatch(onSignOutFailure());
     });
+  }
+}
+
+export function resetPassword(data) {
+  const { email } = data;
+
+  return dispatch => {
+    return fireauth.sendPasswordResetEmail(email)
+    .then(() => {
+      dispatch(launchAuthModal('resetPasswordRequestForm'));
+    }).catch((error) => {
+      dispatch(handleFireauthError(error));
+    });
+  }
+}
+
+export function launchAuthModal(form) {
+  return dispatch => {
+    fireauth.signOut();
+    dispatch(clearAuthForm(form));
+    dispatch(toggleAuthModal());
   }
 }
 
@@ -72,21 +98,15 @@ export function navigateFromSplash(auth) {
   }
 }
 
-function clearSignInForm() {
+export function toggleAuthModal() {
   return {
-    type: Constants.SIGN_IN
+    type: Constants.TOGGLE_AUTH_MODAL
   }
 }
 
-function clearSignUpForm() {
-  return {
-    type: Constants.SIGN_UP
-  }
-}
-
-function onSignUpSuccess() {
-  return {
-    type: Constants.SIGN_UP_SUCCESS
+function clearAuthForm(form) {
+  return dispatch => {
+    dispatch(reset(form));
   }
 }
 

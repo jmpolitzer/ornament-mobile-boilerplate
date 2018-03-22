@@ -3,11 +3,18 @@ import * as Constants from './constants';
 const initialState = {
   signedInUser: null,
   authType: 'signIn',
-  navigateFromSplash: null
+  navigateFromSplash: 'unspecified',
+  modalIsVisible: false
 };
 
 export default (state = initialState, action) => {
   switch(action.type) {
+    case Constants.TOGGLE_AUTH_MODAL:
+      return {
+        ...state,
+        modalIsVisible: !state.modalIsVisible
+      }
+
     case Constants.SET_NAVIGATE_FROM_SPLASH:
       return {
         ...state,

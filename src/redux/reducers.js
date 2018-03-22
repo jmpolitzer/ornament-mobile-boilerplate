@@ -3,14 +3,14 @@ import { reducer as formReducer } from 'redux-form';
 import navigationReducer from './navigation/reducer';
 import authReducer from './auth/reducer';
 import recipesReducer from './recipes/reducer';
-import { ADD_RECIPE, UPDATE_RECIPE } from './recipes/constants';
-import { SIGN_IN, SIGN_UP } from './auth/constants';
+import * as RecipeConstants from './recipes/constants';
+import * as AuthConstants from './auth/constants';
 
 export default combineReducers({
   form: formReducer.plugin({
     createRecipeForm: (state, action) => {
       switch(action.type) {
-        case ADD_RECIPE:
+        case RecipeConstants.ADD_RECIPE:
           return undefined;
 
         default:
@@ -19,25 +19,7 @@ export default combineReducers({
     },
     updateRecipeForm: (state, action) => {
       switch(action.type) {
-        case UPDATE_RECIPE:
-          return undefined;
-
-        default:
-          return state;
-      }
-    },
-    signInForm: (state, action) => {
-      switch(action.type) {
-        case SIGN_IN:
-          return undefined;
-
-        default:
-          return state;
-      }
-    },
-    signUpForm: (state, action) => {
-      switch(action.type) {
-        case SIGN_UP:
+        case RecipeConstants.UPDATE_RECIPE:
           return undefined;
 
         default:

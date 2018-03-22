@@ -23,7 +23,7 @@ export const ReduxedFormInput = props => {
 
 export const validateAuthForm = (fields, values) => {
   const errors = {};
-  const isSignUpForm = (fieldNames) => {
+  const isSignUpOrResetPasswordForm = (fieldNames) => {
     return R.contains('password', fieldNames) && R.contains('confirmPassword', fieldNames);
   }
 
@@ -32,7 +32,7 @@ export const validateAuthForm = (fields, values) => {
       errors[field] = 'Required';
     }
 
-    if(isSignUpForm(fields) && field === 'confirmPassword') {
+    if(isSignUpOrResetPasswordForm(fields) && field === 'confirmPassword') {
       const passwordVal = values['password'];
       const confirmPasswordVal = values['confirmPassword'];
 
@@ -68,7 +68,6 @@ export const handleFireauthError = error => {
       break;
 
     default:
-      return;
+      return error;
   }
-
 }

@@ -1,22 +1,30 @@
 import React from 'react';
-import { StyleSheet, View, Text, Button } from 'react-native';
+import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import { SubmissionError } from 'redux-form';
-import { signIn, signUp, setAuthType } from '../../redux/auth/actions';
-import SignInForm from './signInForm';
-import SignUpForm from './signUpForm';
-import { validateAuthForm } from '../../helpers/forms';
 import R from 'ramda';
+import { signIn, signUp, resetPassword, setAuthType, toggleAuthModal } from '../../redux/auth/actions';
+import { validateAuthForm } from '../../helpers/forms';
+import SignInForm from './forms/signInForm';
+import SignUpForm from './forms/signUpForm';
+import ResetPasswordRequestForm from './forms/passwordResetRequestForm';
+import PasswordResetButton from './components/passwordResetButton';
+import SwitchAuthTypeButton from './components/switchAuthTypeButton';
+import AuthModal from './components/authModal';
 
 class Authenticate extends React.Component {
   constructor() {
     super();
 
-    this.authenticate = this.authenticate.bind(this);
+    this.authenticateOrResetPassword = this.authenticateOrResetPassword.bind(this);
+    this.renderAuthForm = this.renderAuthForm.bind(this);
+    this.toggleAuthModal = this.toggleAuthModal.bind(this);
+    this.redirectToSignIn = this.redirectToSignIn.bind(this);
+    this.showResetPasswordForm = this.showResetPasswordForm.bind(this);
   }
 
-  authenticate(values, dispatch, props) {
+  authenticateOrResetPassword(values, dispatch, props) {
     const fields = Object.keys(props.registeredFields);
     const errors = validateAuthForm(fields, values);
 
@@ -30,19 +38,39 @@ class Authenticate extends React.Component {
     }
   }
 
-  render() {
-    const isSignIn = this.props.authType === 'signIn';
+  renderAuthForm(authType) {
+    const authForms = {
+      signIn: <SignInForm onSubmit={this.authenticateOrResetPassword} />,
+      signUp: <SignUpForm onSubmit={this.authenticateOrResetPassword} />,
+      resetPassword: <ResetPasswordRequestForm onSubmit={this.authenticateOrResetPassword} />
+    }
 
+    return authForms[authType];
+  }
+
+  toggleAuthModal() {
+    this.props.toggleAuthModal()
+  }
+
+  redirectToSignIn() {
+    this.props.authType !== 'signIn' && this.props.setAuthType('signIn');
+  }
+
+  showResetPasswordForm() {
+    this.props.setAuthType('resetPassword');
+  }
+
+  render() {
     return(
       <View style={styles.container}>
-        {isSignIn ?
-          <SignInForm onSubmit={this.authenticate} /> :
-          <SignUpForm onSubmit={this.authenticate} />}
-        <Button
-          backgroundColor="transparent"
-          title={isSignIn ? 'Sign Up' : 'Sign In'}
-          onPress={() => this.props.setAuthType(isSignIn ? 'signUp' : 'signIn')} />
-      </View>
+        {this.renderAuthForm(this.props.authType)}
+        {this.props.authType === 'signIn' && <PasswordResetButton reset={this.showResetPasswordForm} />}
+        <SwitchAuthTypeButton switch={this.props.setAuthType} authType={this.props.authType} />
+        <AuthModal isVisible={this.props.modalIsVisible}
+                   authType={this.props.authType}
+                   redirect={this.redirectToSignIn}
+                   toggle={this.toggleAuthModal} />
+    </View>
     );
   }
 }
@@ -56,14 +84,17 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    authType: state.auth.authType
+    authType: state.auth.authType,
+    modalIsVisible: state.auth.modalIsVisible
   };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   signIn,
   signUp,
-  setAuthType
+  resetPassword,
+  setAuthType,
+  toggleAuthModal
 }, dispatch);
 
 export default connect(
