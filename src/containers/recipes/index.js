@@ -4,7 +4,7 @@ import { List, ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import CreateRecipeForm from './createRecipeForm';
+import CreateRecipeForm from './forms/createRecipeForm';
 import { addRecipe, deleteRecipe, handleRecipesData,
          showRecipesLoading, setActiveRecipe, setActiveRecipeRow } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';

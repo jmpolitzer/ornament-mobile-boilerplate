@@ -2,7 +2,7 @@ import React from 'react';
 import { Field, reduxForm } from 'redux-form';
 import { ScrollView, View } from 'react-native';
 import { FormLabel, Button } from 'react-native-elements';
-import { ReduxedFormInput } from '../../helpers/forms';
+import { ReduxedFormInput } from '../../../helpers/forms';
 
 let UpdateRecipeForm = props => {
   const { handleSubmit, fields} = props;

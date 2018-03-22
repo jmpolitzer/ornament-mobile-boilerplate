@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import R from 'ramda';
-import UpdateRecipeForm from './updateRecipeForm';
+import UpdateRecipeForm from './forms/updateRecipeForm';
 import { updateRecipe } from '../../redux/recipes/actions';
 
 class UpdateRecipeProp extends React.Component {
