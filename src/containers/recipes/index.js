@@ -34,9 +34,9 @@ class Recipes extends React.Component {
     this.unsubscribe();
   }
 
-  addRecipe() {
+  addRecipe(values) {
     this.props.showRecipesLoading(true);
-    this.props.addRecipe(this.props.createRecipeForm.values);
+    this.props.addRecipe(values);
     Keyboard.dismiss();
   }
 
@@ -97,7 +97,7 @@ class Recipes extends React.Component {
                   }}>
                     <ListItem title={`${item.name}`}
                               onPress={() => this.navigateToRecipe(item)} />
-                  </Swipeout>} />
+                </Swipeout>} />
           </List>)}
         </View>
       </View>
@@ -116,7 +116,6 @@ const mapStateToProps = state => {
   return {
     isFetchingRecipes: state.recipes.isFetchingRecipes,
     recipeList: state.recipes.recipeList,
-    createRecipeForm: state.form.createRecipeForm,
     activeRecipeRow: state.recipes.activeRecipeRow
   };
 }

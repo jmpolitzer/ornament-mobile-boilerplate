@@ -40,8 +40,8 @@ export function addRecipe(values) {
   }
 }
 
-export function updateRecipe(id, data) {
-  firestore.collection(model).doc(id).update(data.values);
+export function updateRecipe(id, values) {
+  firestore.collection(model).doc(id).update(values);
 
   return {
     type: Constants.UPDATE_RECIPE
