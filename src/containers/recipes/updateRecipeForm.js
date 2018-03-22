@@ -6,17 +6,16 @@ import { ReduxedFormInput } from '../../helpers/forms';
 
 let UpdateRecipeForm = props => {
   const { handleSubmit, fields} = props;
+  const key = Object.keys(fields)[0];
 
   return (
     <ScrollView keyboardShouldPersistTaps={'handled'}>
-      {Object.keys(fields).map((key) => {
-        return <View>
-          <FormLabel>{key}</FormLabel>
-            <Field name={key}
-                   type='text'
-                   component={ReduxedFormInput} />
-        </View>
-      })}
+      <View>
+        <FormLabel>{key}</FormLabel>
+        <Field name={key}
+          type='text'
+          component={ReduxedFormInput} />
+      </View>
       <Button title='Submit' onPress={handleSubmit}/>
     </ScrollView>
   );
