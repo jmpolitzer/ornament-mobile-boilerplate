@@ -27,7 +27,8 @@ class Recipes extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.handleRecipesData);
+    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.uid)
+    .onSnapshot(this.handleRecipesData);
   }
 
   componentWillUnmount() {
@@ -35,6 +36,8 @@ class Recipes extends React.Component {
   }
 
   addRecipe(values) {
+    values.userId = this.props.signedInUser.uid;
+
     this.props.showRecipesLoading(true);
     this.props.addRecipe(values);
     Keyboard.dismiss();
@@ -116,7 +119,8 @@ const mapStateToProps = state => {
   return {
     isFetchingRecipes: state.recipes.isFetchingRecipes,
     recipeList: state.recipes.recipeList,
-    activeRecipeRow: state.recipes.activeRecipeRow
+    activeRecipeRow: state.recipes.activeRecipeRow,
+    signedInUser: state.auth.signedInUser
   };
 }
 

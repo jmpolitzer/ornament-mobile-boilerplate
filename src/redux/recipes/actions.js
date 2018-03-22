@@ -32,7 +32,8 @@ export function clearActiveRecipe() {
 export function addRecipe(values) {
   firestore.collection(model).add({
     name: values.name,
-    duration: values.duration
+    duration: values.duration,
+    userId: values.userId
   });
 
   return {
