@@ -3,7 +3,7 @@ import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 import R from 'ramda';
-import UpdateRecipeForm from './updateRecipeForm';
+import UpdateRecipeForm from './forms/updateRecipeForm';
 import { updateRecipe } from '../../redux/recipes/actions';
 
 class UpdateRecipeProp extends React.Component {
@@ -15,8 +15,8 @@ class UpdateRecipeProp extends React.Component {
     this.updateRecipe = this.updateRecipe.bind(this);
   }
 
-  updateRecipe() {
-    this.props.updateRecipe(this.props.recipe.key, this.props.updateRecipeForm);
+  updateRecipe(values) {
+    this.props.updateRecipe(this.props.recipe.key, values);
     this.props.navigation.goBack();
   }
 
@@ -43,8 +43,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    recipe: state.recipes.recipe,
-    updateRecipeForm: state.form.updateRecipeForm
+    recipe: state.recipes.recipe
   };
 }
 

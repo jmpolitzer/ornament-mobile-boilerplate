@@ -2,6 +2,17 @@ import { firestore } from '../../firebase';
 import * as Constants from './constants';
 const model = 'recipes';
 
+/*
+  Firestore Authorization Rules:
+
+  Not working for now: https://stackoverflow.com/questions/48054884/firebase-firestore-missing-or-insufficient-permissions-using-expo-react-native
+
+  match /recipes/{recipe} {
+    allow read, update, delete: if request.auth.uid == resource.data.userId;
+    allow create: if request.auth.uid != null;
+  }
+*/
+
 export function showRecipesLoading(bool) {
   return {
     type: Constants.IS_FETCHING_RECIPES,
@@ -32,7 +43,8 @@ export function clearActiveRecipe() {
 export function addRecipe(values) {
   firestore.collection(model).add({
     name: values.name,
-    duration: values.duration
+    duration: values.duration,
+    userId: values.userId
   });
 
   return {
@@ -40,8 +52,8 @@ export function addRecipe(values) {
   }
 }
 
-export function updateRecipe(id, data) {
-  firestore.collection(model).doc(id).update(data.values);
+export function updateRecipe(id, values) {
+  firestore.collection(model).doc(id).update(values);
 
   return {
     type: Constants.UPDATE_RECIPE

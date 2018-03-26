@@ -4,7 +4,7 @@ import { List, ListItem } from 'react-native-elements';
 import Swipeout from 'react-native-swipeout';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-import CreateRecipeForm from './createRecipeForm';
+import CreateRecipeForm from './forms/createRecipeForm';
 import { addRecipe, deleteRecipe, handleRecipesData,
          showRecipesLoading, setActiveRecipe, setActiveRecipeRow } from '../../redux/recipes/actions';
 import { firestore } from '../../firebase';
@@ -27,16 +27,19 @@ class Recipes extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.onSnapshot(this.handleRecipesData);
+    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.uid)
+    .onSnapshot(this.handleRecipesData);
   }
 
   componentWillUnmount() {
     this.unsubscribe();
   }
 
-  addRecipe() {
+  addRecipe(values) {
+    values.userId = this.props.signedInUser.uid;
+
     this.props.showRecipesLoading(true);
-    this.props.addRecipe(this.props.createRecipeForm.values);
+    this.props.addRecipe(values);
     Keyboard.dismiss();
   }
 
@@ -97,7 +100,7 @@ class Recipes extends React.Component {
                   }}>
                     <ListItem title={`${item.name}`}
                               onPress={() => this.navigateToRecipe(item)} />
-                  </Swipeout>} />
+                </Swipeout>} />
           </List>)}
         </View>
       </View>
@@ -116,8 +119,8 @@ const mapStateToProps = state => {
   return {
     isFetchingRecipes: state.recipes.isFetchingRecipes,
     recipeList: state.recipes.recipeList,
-    createRecipeForm: state.form.createRecipeForm,
-    activeRecipeRow: state.recipes.activeRecipeRow
+    activeRecipeRow: state.recipes.activeRecipeRow,
+    signedInUser: state.auth.signedInUser
   };
 }
 

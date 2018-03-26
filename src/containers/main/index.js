@@ -13,6 +13,7 @@ class Main extends React.Component {
     super();
 
     this.unsubscribe = null;
+    this.resetUserAndGoToSignedOutState = this.resetUserAndGoToSignedOutState.bind(this);
   }
 
   componentWillMount() {
@@ -22,18 +23,21 @@ class Main extends React.Component {
           this.props.dispatch(setSignedInUser(user));
           this.props.dispatch(navigateFromSplash('signedIn'));
         } else {
-          this.props.dispatch(setSignedInUser(null));
-          this.props.dispatch(navigateFromSplash('signedOut'));
+          this.resetUserAndGoToSignedOutState();
         }
       } else {
-        this.props.dispatch(setSignedInUser(null));
-        this.props.dispatch(navigateFromSplash('signedOut'));
+        this.resetUserAndGoToSignedOutState();
       }
     });
   }
 
   componentWillUnmount() {
     this.unsubscribe();
+  }
+
+  resetUserAndGoToSignedOutState() {
+    this.props.dispatch(setSignedInUser(null));
+    this.props.dispatch(navigateFromSplash('signedOut'));
   }
 
   render() {
