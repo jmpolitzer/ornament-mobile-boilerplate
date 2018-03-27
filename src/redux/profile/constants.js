@@ -1,0 +1,1 @@
+export const SELECT_PROFILE_PHOTO = 'profile/SELECT_PROFILE_PHOTO';
