@@ -5,7 +5,7 @@ import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 import { signOut, setAuthType } from '../../redux/auth/actions';
-import { selectProfilePhoto } from '../../redux/profile/actions';
+import { createFirestorageBucket, selectProfilePhoto } from '../../redux/profile/actions';
 
 class Profile extends React.Component {
   constructor() {
@@ -13,6 +13,10 @@ class Profile extends React.Component {
 
     this.selectProfilePhoto = this.selectProfilePhoto.bind(this);
     this.signout = this.signout.bind(this);
+  }
+
+  componentDidMount() {
+    this.props.createFirestorageBucket(this.props.signedInUser.email);
   }
 
   selectProfilePhoto() {
@@ -72,6 +76,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   signOut,
   setAuthType,
+  createFirestorageBucket,
   selectProfilePhoto
 }, dispatch);
 
