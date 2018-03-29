@@ -2,9 +2,9 @@ import { combineReducers } from 'redux';
 import { reducer as formReducer } from 'redux-form';
 import navigationReducer from './navigation/reducer';
 import authReducer from './auth/reducer';
+import notificationsReducer from './notifications/reducer';
 import recipesReducer from './recipes/reducer';
 import * as RecipeConstants from './recipes/constants';
-import * as AuthConstants from './auth/constants';
 
 export default combineReducers({
   form: formReducer.plugin({
@@ -29,5 +29,6 @@ export default combineReducers({
   }),
   navigation: navigationReducer,
   auth: authReducer,
+  notifications: notificationsReducer,
   recipes: recipesReducer
 });

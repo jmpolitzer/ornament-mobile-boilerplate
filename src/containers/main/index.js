@@ -5,6 +5,7 @@ import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { RootNavigator } from '../../navigation';
 import { fireauth } from '../../firebase';
 import { navigateFromSplash, setSignedInUser } from '../../redux/auth/actions';
+import { registerForPushNotifications } from '../../redux/notifications/actions';
 
 const addListener = createReduxBoundAddListener('root');
 
@@ -31,6 +32,12 @@ class Main extends React.Component {
     });
   }
 
+  componentDidUpdate() {
+    if(this.props.signedInUser && !this.props.notificationToken) {
+      this.props.dispatch(registerForPushNotifications(this.props.signedInUser.email));
+    }
+  }
+
   componentWillUnmount() {
     this.unsubscribe();
   }
@@ -53,7 +60,9 @@ class Main extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    navigation: state.navigation
+    navigation: state.navigation,
+    signedInUser: state.auth.signedInUser,
+    notificationToken: state.notifications.notificationToken
   }
 }
 
