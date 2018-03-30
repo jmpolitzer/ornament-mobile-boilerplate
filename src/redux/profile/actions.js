@@ -3,11 +3,11 @@ import { firestorage } from '../../firebase';
 import { ImagePicker } from 'expo';
 
 export function createFirestorageBucket(email) {
-  console.log(email);
+  // console.log(email);
   return dispatch => {
     const storageRef = firestorage.ref();
     const profileRef = storageRef.child(`profiles/${email}`);
-    console.log(profileRef);
+    // console.log(profileRef);
 
     return {
       type: 'CREATE_PROFILE_BUCKET_SUCCESS'

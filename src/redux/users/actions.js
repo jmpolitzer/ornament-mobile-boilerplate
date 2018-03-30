@@ -8,10 +8,7 @@ export function fetchUser(authUser) {
     firestore.collection(model).where('authId', '==', authUser.uid).get()
     .then((snapshot) => {
       snapshot.forEach((doc) => {
-        const user = doc.data();
-        user.id = doc.id;
-
-        dispatch(setSignedInUser(user));
+        dispatch(setSignedInUser(packageUser(doc)));
         dispatch(navigateFromSplash('signedIn'));
       });
     })
@@ -33,10 +30,15 @@ export function updateUser(id, values) {
   }
 }
 
-export function handleUserUpdate(snapshot) {
-  console.log('updated user!', snapshot);
-
-  return {
-    type: 'UPDATE_SIGNED_IN_USER'
+export function handleUserUpdate(doc) {
+  return dispatch => {
+    dispatch(setSignedInUser(packageUser(doc)));
   }
+}
+
+function packageUser(doc) {
+  let user = doc.data();
+  user.id = doc.id;
+
+  return user;
 }

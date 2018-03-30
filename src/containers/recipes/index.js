@@ -12,6 +12,7 @@ import { firestore } from '../../firebase';
 class Recipes extends React.Component {
   constructor() {
     super();
+    
     this.ref = firestore.collection('recipes');
     this.unsubscribe = null;
     this.addRecipe = this.addRecipe.bind(this);

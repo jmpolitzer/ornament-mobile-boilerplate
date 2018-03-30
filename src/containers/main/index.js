@@ -35,9 +35,9 @@ class Main extends React.Component {
     });
   }
 
-  componentDidMount() {
-    if(this.props.signedInUser) {
-      this.unsubscribeUsers = this.ref.doc(this.props.signedInUser.id)
+  componentWillReceiveProps(nextProps) {
+    if(!this.props.signedInUser && nextProps.signedInUser) {
+      this.unsubscribeUsers = this.ref.doc(nextProps.signedInUser.id)
       .onSnapshot(this.handleUserUpdate);
     }
   }
@@ -53,8 +53,8 @@ class Main extends React.Component {
     this.unsubscribeUsers();
   }
 
-  handleUserUpdate(snapshot) {
-    this.props.dispatch(handleUserUpdate(snapshot));
+  handleUserUpdate(doc) {
+    this.props.dispatch(handleUserUpdate(doc));
   }
 
   resetUserAndGoToSignedOutState() {
