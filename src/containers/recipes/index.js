@@ -27,7 +27,7 @@ class Recipes extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.uid)
+    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.id)
     .onSnapshot(this.handleRecipesData);
   }
 
@@ -36,7 +36,7 @@ class Recipes extends React.Component {
   }
 
   addRecipe(values) {
-    values.userId = this.props.signedInUser.uid;
+    values.userId = this.props.signedInUser.id;
 
     this.props.showRecipesLoading(true);
     this.props.addRecipe(values);

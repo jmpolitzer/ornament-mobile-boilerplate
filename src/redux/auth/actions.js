@@ -1,6 +1,6 @@
 import * as Constants from './constants';
 import { NavigationActions } from 'react-navigation';
-import { fireauth } from '../../firebase';
+import { fireauth, firestore } from '../../firebase';
 import { handleFireauthError } from '../../helpers/forms';
 import { reset } from 'redux-form';
 
@@ -28,7 +28,11 @@ export function signUp(credentials) {
 
     return fireauth.createUserWithEmailAndPassword(email, password)
     .then((user) => {
-      fireauth.currentUser.updateProfile({displayName: name})
+      firestore.collection('users').add({
+        authId: user.uid,
+        email: user.email,
+        name: name
+      })
       .then(() => {
         dispatch(NavigationActions.navigate({ routeName: 'Splash' }));
 

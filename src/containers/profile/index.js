@@ -42,7 +42,7 @@ class Profile extends React.Component {
       <View style={styles.container}>
         {this.props.signedInUser && <View>
           <Text>
-            {this.props.signedInUser.displayName}
+            {this.props.signedInUser.name}
           </Text>
         </View>}
         <View>
