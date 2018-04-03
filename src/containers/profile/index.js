@@ -2,10 +2,10 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Avatar, Button } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 import { signOut, setAuthType } from '../../redux/auth/actions';
-import { createFirestorageBucket, selectProfilePhoto } from '../../redux/profile/actions';
+import { selectProfilePhoto } from '../../redux/profile/actions';
 
 class Profile extends React.Component {
   constructor() {
@@ -15,21 +15,8 @@ class Profile extends React.Component {
     this.signout = this.signout.bind(this);
   }
 
-  componentDidMount() {
-    this.props.createFirestorageBucket(this.props.signedInUser.email);
-  }
-
   selectProfilePhoto() {
-    console.log('selecting profile photo!');
-    this.props.selectProfilePhoto();
-
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //   allowsEditing: true,
-    //   aspect: [3, 3]
-    // });
-    //
-    // console.log(result);
+    this.props.selectProfilePhoto(this.props.signedInUser);
   }
 
   signout() {
@@ -41,6 +28,8 @@ class Profile extends React.Component {
     return(
       <View style={styles.container}>
         {this.props.signedInUser && <View>
+          {this.props.signedInUser.profileImageURL &&
+            <Avatar large rounded source={{uri: this.props.signedInUser.profileImageURL}} />}
           <Text>
             {this.props.signedInUser.name}
           </Text>
@@ -76,7 +65,6 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   signOut,
   setAuthType,
-  createFirestorageBucket,
   selectProfilePhoto
 }, dispatch);
 
