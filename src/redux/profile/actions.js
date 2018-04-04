@@ -9,12 +9,14 @@ export function selectProfilePhoto(user) {
       let data = await pickImage();
 
       if(!data.cancelled) {
+        dispatch(setImageUploadState(true));
+
         let downloadURL = await uploadImageToFireStorage(data, user.email);
 
         dispatch(updateUser(user.id, { profileImageURL: downloadURL }));
       } else {
         return {
-          type: 'CANCEL_SELECT_IMAGE'
+          type: Constants.CANCEL_SELECT_IMAGE
         }
       }
     } catch(e) {
@@ -22,8 +24,10 @@ export function selectProfilePhoto(user) {
       console.log('error', e);
 
       return {
-        type: 'IMAGE_PICKER_ERROR'
+        type: Constants.IMAGE_PICKER_ERROR
       }
+    } finally {
+      dispatch(setImageUploadState(false));
     }
   }
 }
@@ -54,4 +58,11 @@ async function uploadImageToFireStorage(data, email) {
       resolve(uploadTask.snapshot.downloadURL);
     });
   });
+}
+
+function setImageUploadState(bool) {
+  return {
+    type: Constants.PROFILE_IMAGE_IS_UPLOADING,
+    imageIsUploading: bool
+  }
 }

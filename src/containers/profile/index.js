@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet } from 'react-native';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-elements';
 import { ImagePicker } from 'expo';
 import R from 'ramda';
@@ -46,18 +46,21 @@ class Profile extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        {this.props.signedInUser && <View>
-          {this.generateAvatar()}
-          <Text>
-            {this.props.signedInUser.name}
-          </Text>
+        {this.props.imageIsUploading ? <ActivityIndicator/> :
+        <View>
+          <View>
+            {this.generateAvatar()}
+            <Text>
+              {this.props.signedInUser.name}
+            </Text>
+          </View>
+          <View>
+            <Button style={styles.button} backgroundColor='blue' title='Select Profile Photo' onPress={this.selectProfilePhoto} />
+          </View>
+          <View>
+            <Button style={styles.button} backgroundColor='#841584' title='Sign Out' onPress={this.signout} />
+          </View>
         </View>}
-        <View>
-          <Button style={styles.button} backgroundColor='blue' title='Select Profile Photo' onPress={this.selectProfilePhoto} />
-        </View>
-        <View>
-          <Button style={styles.button} backgroundColor='#841584' title='Sign Out' onPress={this.signout} />
-        </View>
       </View>
     );
   }
@@ -76,7 +79,8 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    signedInUser: state.auth.signedInUser
+    signedInUser: state.auth.signedInUser,
+    imageIsUploading: state.profile.imageIsUploading
   };
 }
 
