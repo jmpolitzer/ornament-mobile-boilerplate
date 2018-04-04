@@ -19,7 +19,7 @@ class UpdateRecipe extends React.Component {
     const strippedRecipe = (R.omit(['doc', 'key'], this.props.recipe));
 
     return Object.keys(strippedRecipe).map((key, index) => {
-      return { prop: strippedRecipe[key], propKey: key, key: index };
+      return { prop: strippedRecipe[key], propKey: key, key: index.toString() };
     });
   }
 

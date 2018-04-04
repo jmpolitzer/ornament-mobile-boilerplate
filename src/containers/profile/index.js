@@ -1,35 +1,41 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { ActivityIndicator, View, Text, StyleSheet } from 'react-native';
+import { Avatar, Button } from 'react-native-elements';
 import { ImagePicker } from 'expo';
+import R from 'ramda';
 import { signOut, setAuthType } from '../../redux/auth/actions';
-import { createFirestorageBucket, selectProfilePhoto } from '../../redux/profile/actions';
+import { selectProfilePhoto } from '../../redux/profile/actions';
 
 class Profile extends React.Component {
   constructor() {
     super();
 
+    this.generateAvatar = this.generateAvatar.bind(this);
+    this.getUserInitials = this.getUserInitials.bind(this);
     this.selectProfilePhoto = this.selectProfilePhoto.bind(this);
     this.signout = this.signout.bind(this);
   }
 
-  componentDidMount() {
-    this.props.createFirestorageBucket(this.props.signedInUser.email);
+  generateAvatar() {
+    const image = this.props.signedInUser.profileImageURL;
+
+    return <Avatar large
+                   rounded
+                   source={image ? {uri: this.props.signedInUser.profileImageURL} : null}
+                   title={!image ? this.getUserInitials() : null } />;
+  }
+
+  getUserInitials() {
+    const name = this.props.signedInUser.name;
+    const initial = x => x.charAt(0);
+
+    return R.join('', R.map(initial, name.split(/-| /)));
   }
 
   selectProfilePhoto() {
-    console.log('selecting profile photo!');
-    this.props.selectProfilePhoto();
-
-    // let result = await ImagePicker.launchImageLibraryAsync({
-    //   mediaTypes: ImagePicker.MediaTypeOptions.Images,
-    //   allowsEditing: true,
-    //   aspect: [3, 3]
-    // });
-    //
-    // console.log(result);
+    this.props.selectProfilePhoto(this.props.signedInUser);
   }
 
   signout() {
@@ -40,17 +46,21 @@ class Profile extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        {this.props.signedInUser && <View>
-          <Text>
-            {this.props.signedInUser.displayName}
-          </Text>
+        {this.props.imageIsUploading ? <ActivityIndicator/> :
+        <View>
+          <View>
+            {this.generateAvatar()}
+            <Text>
+              {this.props.signedInUser.name}
+            </Text>
+          </View>
+          <View>
+            <Button style={styles.button} backgroundColor='blue' title='Select Profile Photo' onPress={this.selectProfilePhoto} />
+          </View>
+          <View>
+            <Button style={styles.button} backgroundColor='#841584' title='Sign Out' onPress={this.signout} />
+          </View>
         </View>}
-        <View>
-          <Button style={styles.button} backgroundColor='blue' title='Select Profile Photo' onPress={this.selectProfilePhoto} />
-        </View>
-        <View>
-          <Button style={styles.button} backgroundColor='#841584' title='Sign Out' onPress={this.signout} />
-        </View>
       </View>
     );
   }
@@ -69,14 +79,14 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-    signedInUser: state.auth.signedInUser
+    signedInUser: state.auth.signedInUser,
+    imageIsUploading: state.profile.imageIsUploading
   };
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   signOut,
   setAuthType,
-  createFirestorageBucket,
   selectProfilePhoto
 }, dispatch);
 

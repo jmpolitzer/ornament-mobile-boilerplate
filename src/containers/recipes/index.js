@@ -12,6 +12,7 @@ import { firestore } from '../../firebase';
 class Recipes extends React.Component {
   constructor() {
     super();
+    
     this.ref = firestore.collection('recipes');
     this.unsubscribe = null;
     this.addRecipe = this.addRecipe.bind(this);
@@ -27,7 +28,7 @@ class Recipes extends React.Component {
   }
 
   componentDidMount() {
-    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.uid)
+    this.unsubscribe = this.ref.where('userId', '==', this.props.signedInUser.id)
     .onSnapshot(this.handleRecipesData);
   }
 
@@ -36,7 +37,7 @@ class Recipes extends React.Component {
   }
 
   addRecipe(values) {
-    values.userId = this.props.signedInUser.uid;
+    values.userId = this.props.signedInUser.id;
 
     this.props.showRecipesLoading(true);
     this.props.addRecipe(values);
