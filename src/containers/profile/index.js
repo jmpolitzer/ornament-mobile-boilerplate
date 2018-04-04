@@ -4,6 +4,7 @@ import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import { Avatar, Button } from 'react-native-elements';
 import { ImagePicker } from 'expo';
+import R from 'ramda';
 import { signOut, setAuthType } from '../../redux/auth/actions';
 import { selectProfilePhoto } from '../../redux/profile/actions';
 
@@ -11,8 +12,26 @@ class Profile extends React.Component {
   constructor() {
     super();
 
+    this.generateAvatar = this.generateAvatar.bind(this);
+    this.getUserInitials = this.getUserInitials.bind(this);
     this.selectProfilePhoto = this.selectProfilePhoto.bind(this);
     this.signout = this.signout.bind(this);
+  }
+
+  generateAvatar() {
+    const image = this.props.signedInUser.profileImageURL;
+
+    return <Avatar large
+                   rounded
+                   source={image ? {uri: this.props.signedInUser.profileImageURL} : null}
+                   title={!image ? this.getUserInitials() : null } />;
+  }
+
+  getUserInitials() {
+    const name = this.props.signedInUser.name;
+    const initial = x => x.charAt(0);
+
+    return R.join('', R.map(initial, name.split(/-| /)));
   }
 
   selectProfilePhoto() {
@@ -28,8 +47,7 @@ class Profile extends React.Component {
     return(
       <View style={styles.container}>
         {this.props.signedInUser && <View>
-          {this.props.signedInUser.profileImageURL &&
-            <Avatar large rounded source={{uri: this.props.signedInUser.profileImageURL}} />}
+          {this.generateAvatar()}
           <Text>
             {this.props.signedInUser.name}
           </Text>

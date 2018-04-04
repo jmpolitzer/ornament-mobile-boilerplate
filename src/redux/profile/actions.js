@@ -18,6 +18,7 @@ export function selectProfilePhoto(user) {
         }
       }
     } catch(e) {
+      /* TODO: Handle Error */
       console.log('error', e);
 
       return {
