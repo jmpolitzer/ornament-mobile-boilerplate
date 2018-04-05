@@ -1,8 +1,11 @@
 import React from 'react';
+import { View } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
 import { Notifications } from 'expo';
+import DropdownAlert from 'react-native-dropdownalert';
+import { DropDownHolder } from '../../helpers/notifications/dropDownHolder';
 import { RootNavigator } from '../../navigation';
 import { fireauth, firestore } from '../../firebase';
 import { navigateFromSplash, setSignedInUser } from '../../redux/auth/actions';
@@ -60,7 +63,10 @@ class Main extends React.Component {
   }
 
   handleNotification(notification) {
+    /* TODO: Display data object in foreground notification. */
+
     console.log(notification.data);
+    DropDownHolder.getDropDown().alertWithType('success', 'Notification', JSON.stringify(notification.data));
   }
 
   handleUserUpdate(doc) {
@@ -74,11 +80,14 @@ class Main extends React.Component {
 
   render() {
     return (
-      <RootNavigator navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.navigation,
-        addListener
-      })} />
+      <View style={{width: '100%', height: '100%'}}>
+        <RootNavigator navigation={addNavigationHelpers({
+            dispatch: this.props.dispatch,
+            state: this.props.navigation,
+            addListener
+          })} />
+        <DropdownAlert ref={(ref) => DropDownHolder.setDropDown(ref)} />
+      </View>
     );
   }
 }
