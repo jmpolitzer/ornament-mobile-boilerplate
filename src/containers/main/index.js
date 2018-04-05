@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import { Notifications } from 'expo';
 import { RootNavigator } from '../../navigation';
 import { fireauth, firestore } from '../../firebase';
 import { navigateFromSplash, setSignedInUser } from '../../redux/auth/actions';
@@ -17,6 +18,7 @@ class Main extends React.Component {
     this.ref = firestore.collection('users');
     this.unsubscribeAuth = null;
     this.unsubscribeUsers = null;
+    this.handleNotification = this.handleNotification.bind(this);
     this.handleUserUpdate = this.handleUserUpdate.bind(this);
     this.resetUserAndGoToSignedOutState = this.resetUserAndGoToSignedOutState.bind(this);
   }
@@ -35,6 +37,10 @@ class Main extends React.Component {
     });
   }
 
+  componentDidMount() {
+    this.notificationSubscription = Notifications.addListener(this.handleNotification);
+  }
+
   componentWillReceiveProps(nextProps) {
     if(!this.props.signedInUser && nextProps.signedInUser) {
       this.unsubscribeUsers = this.ref.doc(nextProps.signedInUser.id)
@@ -51,6 +57,10 @@ class Main extends React.Component {
   componentWillUnmount() {
     this.unsubscribeAuth();
     this.unsubscribeUsers();
+  }
+
+  handleNotification(notification) {
+    console.log(notification.data);
   }
 
   handleUserUpdate(doc) {
