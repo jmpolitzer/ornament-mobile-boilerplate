@@ -24,3 +24,16 @@ export function registerForPushNotifications(user) {
     dispatch(updateUser(user.id, { notificationToken: token }));
   }
 }
+
+/*
+https://docs.expo.io/versions/v26.0.0/guides/push-notifications
+
+To test push notifications:
+
+curl -H "Content-Type: application/json" -X POST https://exp.host/--/api/v2/push/send -d '{
+  "to": "ExponentPushToken[tb-hZCHP1KyDOxlV2vYAGo]",
+  "title": "hello",
+  "body": "world", "data": {"title":"A New Notification!", "body":"It looks like this thing may be working."}
+}'
+
+*/

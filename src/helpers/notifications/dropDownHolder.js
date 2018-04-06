@@ -1,3 +1,5 @@
+/* https://github.com/testshallpass/react-native-dropdownalert */
+
 export class DropDownHolder {
   static dropDown;
 

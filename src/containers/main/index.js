@@ -1,5 +1,5 @@
 import React from 'react';
-import { View } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
@@ -63,10 +63,13 @@ class Main extends React.Component {
   }
 
   handleNotification(notification) {
-    /* TODO: Display data object in foreground notification. */
+    const data = notification.data;
 
-    console.log(notification.data);
-    DropDownHolder.getDropDown().alertWithType('success', 'Notification', JSON.stringify(notification.data));
+    if(notification.origin === 'received') {
+      DropDownHolder.getDropDown().alertWithType('success', data.title, data.body);
+    } else {
+      console.log('app in background', notification);
+    }
   }
 
   handleUserUpdate(doc) {
@@ -80,7 +83,7 @@ class Main extends React.Component {
 
   render() {
     return (
-      <View style={{width: '100%', height: '100%'}}>
+      <View style={styles.container}>
         <RootNavigator navigation={addNavigationHelpers({
             dispatch: this.props.dispatch,
             state: this.props.navigation,
@@ -91,6 +94,13 @@ class Main extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%'
+  }
+});
 
 const mapStateToProps = state => {
   return {
