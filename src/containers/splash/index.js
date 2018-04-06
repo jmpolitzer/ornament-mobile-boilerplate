@@ -1,7 +1,6 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import { View, Text, ActivityIndicator, StyleSheet } from 'react-native';
-import { NavigationActions } from 'react-navigation';
 
 class SplashScreen extends React.Component {
   constructor() {

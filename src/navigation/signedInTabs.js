@@ -1,8 +1,10 @@
 import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
+import { Badge } from 'react-native-elements';
 import { RecipesStack } from './recipesStack';
 import Profile from '../containers/profile';
 import Notifications from '../containers/notifications';
+import NotificationsBadge from '../containers/notifications/notificationsBadge';
 
 export const SignedInTabs = TabNavigator({
   RecipesStack: {
@@ -18,7 +20,11 @@ export const SignedInTabs = TabNavigator({
   NotificationsStack: {
     screen: StackNavigator({
       Notifications: {
-        screen: Notifications
+        screen: Notifications,
+        navigationOptions: ({}) => ({
+          tabBarIcon: ({}) =>
+            <NotificationsBadge />
+        })
       }
     })
   },

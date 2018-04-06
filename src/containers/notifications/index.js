@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
-
+  
 class Notifications extends React.Component {
   constructor() {
     super();

@@ -63,12 +63,12 @@ class Main extends React.Component {
   }
 
   handleNotification(notification) {
+    /* TODO: Persist notifications with read and unread state. */
+
     const data = notification.data;
 
     if(notification.origin === 'received') {
       DropDownHolder.getDropDown().alertWithType('success', data.title, data.body);
-    } else {
-      console.log('app in background', notification);
     }
   }
 
