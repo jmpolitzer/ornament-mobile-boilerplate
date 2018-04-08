@@ -63,8 +63,6 @@ class Main extends React.Component {
   }
 
   handleNotification(notification) {
-    /* TODO: Persist notifications with read and unread state. */
-
     const data = notification.data;
 
     if(notification.origin === 'received') {

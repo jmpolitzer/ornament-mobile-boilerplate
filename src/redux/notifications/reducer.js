@@ -1,8 +1,6 @@
 import * as Constants from './constants';
 
-const initialState = {
-  unreadMessagesCount: 11,
-};
+const initialState = {};
 
 export default (state = initialState, action) => {
   switch(action.type) {
