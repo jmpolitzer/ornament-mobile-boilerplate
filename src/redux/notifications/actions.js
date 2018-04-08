@@ -5,8 +5,9 @@ import { updateUser } from '../users/actions';
 
 /*
 https://docs.expo.io/versions/v26.0.0/guides/push-notifications
+https://docs.expo.io/versions/v26.0.0/sdk/notifications
 
-To test push notifications:
+To test remote push notifications:
 
 curl -H "Content-Type: application/json" -X POST https://exp.host/--/api/v2/push/send -d '{
 "to": "ExponentPushToken[tb-hZCHP1KyDOxlV2vYAGo]",
@@ -35,5 +36,47 @@ export function registerForPushNotifications(user) {
     const token = await Notifications.getExpoPushTokenAsync();
 
     dispatch(updateUser(user.id, { notificationToken: token }));
+  }
+}
+
+export function presentLocalNotification(token) {
+  return async dispatch => {
+    const localNotification = getSampleNotification(token);
+
+    const presentedNotification = await Notifications.presentLocalNotificationAsync(localNotification);
+
+    dispatch(onLocalNotificationPresented());
+  }
+}
+
+export function scheduleLocalNotification(token) {
+  console.log('scheduling notification for', token);
+
+  return dispatch => {
+    dispatch(onLocalNotificationScheduled());
+  }
+}
+
+function onLocalNotificationPresented() {
+  return {
+    type: Constants.LOCAL_NOTIFICATION_PRESENTED
+  }
+}
+
+function onLocalNotificationScheduled() {
+  return {
+    type: Constants.LOCAL_NOTIFICATION_SCHEDULED
+  }
+}
+
+function getSampleNotification(token) {
+  return {
+    to: token,
+    title: 'A New Notification!',
+    body: 'It looks like this thing may be working.',
+    data: {
+      title: 'A New Notification!',
+      body: 'It looks like this thing may be working.'
+    }
   }
 }
