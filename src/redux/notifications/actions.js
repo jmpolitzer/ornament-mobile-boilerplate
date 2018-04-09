@@ -1,4 +1,5 @@
 import { Permissions, Notifications } from 'expo';
+import moment from 'moment';
 import * as Constants from './constants';
 import { firestore } from '../../firebase';
 import { updateUser } from '../users/actions';
@@ -49,11 +50,27 @@ export function presentLocalNotification(token) {
   }
 }
 
-export function scheduleLocalNotification(token) {
-  console.log('scheduling notification for', token);
+export function setDatePickerValue(value) {
+  return {
+    type: Constants.LOCAL_NOTIFICATION_DATEPICKER_CHANGE,
+    value
+  }
+}
 
-  return dispatch => {
-    dispatch(onLocalNotificationScheduled());
+export function scheduleLocalNotification(token, dateString) {
+  return async dispatch => {
+    const date = moment(dateString);
+
+    if(date.isBefore(moment())) {
+      dispatch(presentLocalNotification(token))
+    } else {
+      const schedulingOptions = { time: date.toDate() };
+      const localNotification = getSampleNotification(token);
+
+      const scheduledNotification = await Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions);
+
+      dispatch(onLocalNotificationScheduled());
+    }
   }
 }
 
