@@ -1,7 +1,11 @@
 import React from 'react';
+import { View, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { addNavigationHelpers } from 'react-navigation';
 import { createReduxBoundAddListener } from 'react-navigation-redux-helpers';
+import { Notifications } from 'expo';
+import DropdownAlert from 'react-native-dropdownalert';
+import { DropDownHolder } from '../../helpers/notifications/dropDownHolder';
 import { RootNavigator } from '../../navigation';
 import { fireauth, firestore } from '../../firebase';
 import { navigateFromSplash, setSignedInUser } from '../../redux/auth/actions';
@@ -17,6 +21,7 @@ class Main extends React.Component {
     this.ref = firestore.collection('users');
     this.unsubscribeAuth = null;
     this.unsubscribeUsers = null;
+    this.handleNotification = this.handleNotification.bind(this);
     this.handleUserUpdate = this.handleUserUpdate.bind(this);
     this.resetUserAndGoToSignedOutState = this.resetUserAndGoToSignedOutState.bind(this);
   }
@@ -33,6 +38,10 @@ class Main extends React.Component {
         this.resetUserAndGoToSignedOutState();
       }
     });
+  }
+
+  componentDidMount() {
+    this.notificationSubscription = Notifications.addListener(this.handleNotification);
   }
 
   componentWillReceiveProps(nextProps) {
@@ -53,6 +62,14 @@ class Main extends React.Component {
     this.unsubscribeUsers();
   }
 
+  handleNotification(notification) {
+    const data = notification.data;
+
+    if(notification.origin === 'received') {
+      DropDownHolder.getDropDown().alertWithType('success', data.title, data.body);
+    }
+  }
+
   handleUserUpdate(doc) {
     this.props.dispatch(handleUserUpdate(doc));
   }
@@ -64,14 +81,24 @@ class Main extends React.Component {
 
   render() {
     return (
-      <RootNavigator navigation={addNavigationHelpers({
-        dispatch: this.props.dispatch,
-        state: this.props.navigation,
-        addListener
-      })} />
+      <View style={styles.container}>
+        <RootNavigator navigation={addNavigationHelpers({
+            dispatch: this.props.dispatch,
+            state: this.props.navigation,
+            addListener
+          })} />
+        <DropdownAlert ref={(ref) => DropDownHolder.setDropDown(ref)} />
+      </View>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    height: '100%',
+    width: '100%'
+  }
+});
 
 const mapStateToProps = state => {
   return {
