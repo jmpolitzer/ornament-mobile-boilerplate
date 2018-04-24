@@ -3,6 +3,7 @@ import { reducer as formReducer } from 'redux-form';
 import navigationReducer from './navigation/reducer';
 import authReducer from './auth/reducer';
 import notificationsReducer from './notifications/reducer';
+import mailReducer from './mail/reducer';
 import profileReducer from './profile/reducer';
 import recipesReducer from './recipes/reducer';
 import * as RecipeConstants from './recipes/constants';
@@ -31,6 +32,7 @@ export default combineReducers({
   navigation: navigationReducer,
   auth: authReducer,
   notifications: notificationsReducer,
+  mail: mailReducer,
   profile: profileReducer,
   recipes: recipesReducer
 });

@@ -13,6 +13,13 @@ const config = {
 
 firebase.initializeApp(config);
 
+/* Received error from Firebase with instructions to do this. */
+const firestoreSetup = firebase.firestore();
+const settings = {
+  timestampsInSnapshots: true
+};
+firestoreSetup.settings(settings);
+
+export const firestore = firestoreSetup;
 export const fireauth = firebase.auth();
-export const firestore = firebase.firestore();
 export const firestorage = firebase.storage();
