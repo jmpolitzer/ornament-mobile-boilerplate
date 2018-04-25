@@ -3,17 +3,26 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, Text, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { getSIBAccount } from '../../redux/mail/actions';
+import { getMailAccount, createMailFolderForUser, getMailFolder } from '../../redux/mail/actions';
 
 class Mail extends React.Component {
   constructor() {
     super();
 
-    this.getSIBAccount = this.getSIBAccount.bind(this);
+    this.getMailAccount = this.getMailAccount.bind(this);
+    this.createMailFolderForUser = this.createMailFolderForUser.bind(this);
   }
 
-  getSIBAccount() {
-    this.props.getSIBAccount();
+  componentWillMount() {
+    this.props.getMailFolder();
+  }
+
+  getMailAccount() {
+    this.props.getMailAccount();
+  }
+
+  createMailFolderForUser() {
+    this.props.createMailFolderForUser();
   }
 
   render() {
@@ -22,7 +31,8 @@ class Mail extends React.Component {
         <Text>
           Email Tab
         </Text>
-        <Button style={styles.button} backgroundColor='green' title='Get SIB Account' onPress={this.getSIBAccount} />
+        <Button style={styles.button} backgroundColor='green' title='Test Mail Account' onPress={this.getMailAccount} />
+        <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />
       </View>
     );
   }
@@ -46,7 +56,9 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getSIBAccount
+  getMailAccount,
+  createMailFolderForUser,
+  getMailFolder
 }, dispatch);
 
 export default connect(
