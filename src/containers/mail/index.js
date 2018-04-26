@@ -13,8 +13,10 @@ class Mail extends React.Component {
     this.createMailFolderForUser = this.createMailFolderForUser.bind(this);
   }
 
-  componentWillMount() {
-    this.props.getMailFolder();
+  componentDidMount() {
+    if(this.props.signedInUser && this.props.signedInUser.mailId) {
+      this.props.getMailFolder(this.props.signedInUser.mailId);
+    }
   }
 
   getMailAccount() {
@@ -22,7 +24,7 @@ class Mail extends React.Component {
   }
 
   createMailFolderForUser() {
-    this.props.createMailFolderForUser();
+    this.props.createMailFolderForUser(this.props.signedInUser);
   }
 
   render() {
@@ -32,7 +34,8 @@ class Mail extends React.Component {
           Email Tab
         </Text>
         <Button style={styles.button} backgroundColor='green' title='Test Mail Account' onPress={this.getMailAccount} />
-        <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />
+        {this.props.signedInUser.mailId ? <Text>Your Contacts lists</Text> :
+        <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />}
       </View>
     );
   }
@@ -51,7 +54,7 @@ const styles = StyleSheet.create({
 
 const mapStateToProps = state => {
   return {
-
+    signedInUser: state.auth.signedInUser
   };
 }
 

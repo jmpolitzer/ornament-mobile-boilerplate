@@ -1,60 +1,47 @@
 import * as Constants from './constants';
-import { getFirebaseToken } from '../../redux/auth/actions';
+import API from '../../helpers/api';
+import { updateUser } from '../users/actions';
 
 export function getMailAccount() {
   return async dispatch => {
-    const token = await getFirebaseToken();
+    const data = await API.get('/api/mail/accounts');
 
-    fetch('http://localhost:8080/api/mail/accounts', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-    }).then(res => res.json())
-    .then(json => console.log(json));
-  }
-
-  return {
-    type: 'GET_MAIL_ACCOUNT'
+    dispatch(onGetMailAccount());
   }
 }
 
-export function createMailFolderForUser() {
+export function createMailFolderForUser(user) {
   return async dispatch => {
-    const token = await getFirebaseToken();
+    const data = await API.create('/api/mail/folders');
 
-    fetch('http://localhost:8080/api/mail/folders', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-    }).then(res => res.json());
-  }
-
-  /* TODO: Associate Folder ID with User in Firebase */ 
-
-  return {
-    type: 'CREATE_FOLDER_FOR_USER'
+    dispatch(updateUser(user.id, { mailId: data.id }));
+    dispatch(getMailFolder(data.id));
+    dispatch(onCreateMailFolderForUser());
   }
 }
 
-export function getMailFolder() {
+export function getMailFolder(folderId) {
   return async dispatch => {
-    const token = await getFirebaseToken();
+    const data = await API.get(`/api/mail/folders/${folderId}`);
 
-    fetch('http://localhost:8080/api/mail/folders', {
-      method: 'GET',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': token
-      },
-    }).then(res => res.json())
-    .then(json => console.log(json));
+    dispatch(onGetMailFolder());
   }
+}
 
+function onGetMailAccount() {
   return {
-    type: 'GET_FOLDER_FOR_USER'
+    type: Constants.ON_GET_MAIL_ACCOUNT
+  }
+}
+
+function onCreateMailFolderForUser() {
+  return {
+    type: Constants.ON_CREATE_FOLDER_FOR_USER
+  }
+}
+
+function onGetMailFolder() {
+  return {
+    type: Constants.ON_GET_FOLDER_FOR_USER
   }
 }
