@@ -9,7 +9,7 @@ module.exports = {
     return fetch(url + path, {
       method: 'POST',
       headers: headers,
-      body: body
+      body: JSON.stringify(body)
     }).then(res => res.json())
     .catch(err => handleError(err));
   },

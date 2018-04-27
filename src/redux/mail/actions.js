@@ -20,11 +20,26 @@ export function createMailFolderForUser(user) {
   }
 }
 
-export function getMailFolder(folderId) {
+export function getMailFolderLists(folderId) {
   return async dispatch => {
     const data = await API.get(`/api/mail/folders/${folderId}`);
 
-    dispatch(onGetMailFolder());
+    dispatch(onGetMailFolderLists(data));
+  }
+}
+
+export function createContactList(folderId, form) {
+  return async dispatch => {
+    const body = {
+      name: form.name
+    };
+
+    const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
+
+    /* TODO: Redirect back to Mail index page. */ 
+
+    dispatch(getMailFolderLists(folderId));
+    dispatch(onCreateContactList());
   }
 }
 
@@ -40,8 +55,15 @@ function onCreateMailFolderForUser() {
   }
 }
 
-function onGetMailFolder() {
+function onGetMailFolderLists(lists) {
   return {
-    type: Constants.ON_GET_FOLDER_FOR_USER
+    type: Constants.ON_GET_FOLDER_LISTS_FOR_USER,
+    lists
+  }
+}
+
+function onCreateContactList() {
+  return {
+    type: Constants.ON_CREATE_LIST
   }
 }

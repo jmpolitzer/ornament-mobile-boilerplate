@@ -2,9 +2,9 @@ import React from 'react';
 import { TabNavigator, StackNavigator } from 'react-navigation';
 import { Badge } from 'react-native-elements';
 import { RecipesStack } from './recipesStack';
+import { MailStack } from './mailStack';
 import Profile from '../containers/profile';
 import Notifications from '../containers/notifications';
-import Mail from '../containers/mail';
 
 export const SignedInTabs = TabNavigator({
   RecipesStack: {
@@ -25,10 +25,6 @@ export const SignedInTabs = TabNavigator({
     })
   },
   MailStack: {
-    screen: StackNavigator({
-      Mail: {
-        screen: Mail
-      }
-    })
+    screen: MailStack
   }
 });
