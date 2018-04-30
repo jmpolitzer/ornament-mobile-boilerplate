@@ -1,3 +1,4 @@
+import { NavigationActions } from 'react-navigation';
 import * as Constants from './constants';
 import API from '../../helpers/api';
 import { updateUser } from '../users/actions';
@@ -34,9 +35,9 @@ export function createContactList(folderId, form) {
       name: form.name
     };
 
-    const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
+    dispatch(NavigationActions.navigate({ routeName: 'Mail' }));
 
-    /* TODO: Redirect back to Mail index page. */ 
+    const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
 
     dispatch(getMailFolderLists(folderId));
     dispatch(onCreateContactList());
@@ -55,10 +56,10 @@ function onCreateMailFolderForUser() {
   }
 }
 
-function onGetMailFolderLists(lists) {
+function onGetMailFolderLists(data) {
   return {
     type: Constants.ON_GET_FOLDER_LISTS_FOR_USER,
-    lists
+    lists: data.lists
   }
 }
 

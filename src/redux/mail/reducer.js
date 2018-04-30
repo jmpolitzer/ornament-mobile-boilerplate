@@ -1,7 +1,7 @@
 import * as Constants from './constants';
 
 const initialState = {
-  mailFolderLists: []
+  mailFolderLists: null
 };
 
 export default (state = initialState, action) => {

@@ -7,6 +7,7 @@ import mailReducer from './mail/reducer';
 import profileReducer from './profile/reducer';
 import recipesReducer from './recipes/reducer';
 import * as RecipeConstants from './recipes/constants';
+import * as MailConstants from './mail/constants';
 
 export default combineReducers({
   form: formReducer.plugin({
@@ -22,6 +23,15 @@ export default combineReducers({
     updateRecipeForm: (state, action) => {
       switch(action.type) {
         case RecipeConstants.UPDATE_RECIPE:
+          return undefined;
+
+        default:
+          return state;
+      }
+    },
+    createContactListForm: (state, action) => {
+      switch(action.type) {
+        case MailConstants.ON_CREATE_LIST:
           return undefined;
 
         default:

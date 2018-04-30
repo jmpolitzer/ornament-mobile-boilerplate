@@ -1,7 +1,7 @@
 import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { getMailAccount, createMailFolderForUser, getMailFolderLists } from '../../redux/mail/actions';
 import ContactLists from './contactLists';
@@ -32,9 +32,6 @@ class Mail extends React.Component {
 
     return(
       <View style={styles.container}>
-        <Text>
-          Email Tab
-        </Text>
         <Button style={styles.button} backgroundColor='green' title='Test Mail Account' onPress={this.getMailAccount} />
         {this.props.signedInUser.mailId ? <ContactLists lists={this.props.mailFolderLists} /> :
         <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />}
@@ -46,8 +43,7 @@ class Mail extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: 22,
-    alignItems: 'center'
+    paddingTop: 22
   },
   button: {
     marginTop: 5

@@ -1,5 +1,6 @@
 import React from 'react';
-import { StyleSheet, View, Text } from 'react-native';
+import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 // import R from 'ramda';
@@ -7,19 +8,19 @@ import { bindActionCreators } from 'redux';
 export default class ContactLists extends React.Component {
 
   render() {
-    /* TODO: Render contact lists. */ 
-    console.log(this.props.lists);
     return(
-      <View style={styles.container}>
-        <Text>Your Contact Lists</Text>
+      <View>
+        {!this.props.lists ? <ActivityIndicator/> :
+        <List>
+          <FlatList data={this.props.lists}
+                    keyExtractor={(item, index) => item.id.toString()}
+                    renderItem={({item}) => <ListItem title={item.name} />} />
+        </List>}
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    paddingTop: 22
-  }
+
 });

@@ -9,6 +9,7 @@ export const MailStack = StackNavigator({
   Mail: {
     screen: Mail,
     navigationOptions: ({ navigation }) => ({
+      title: 'Contact Lists',
       headerRight: <Icon name='plus'
                          type='material-community'
                          onPress={() => {
