@@ -5,10 +5,7 @@ import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
 
 export default class ContactLists extends React.Component {
-  constructor() {
-    super();
-  }
-
+  
   navigateToListScreen(e, list) {
     this.props.setActiveList(list);
     this.props.navigateToListScreen(list.id);

@@ -51,6 +51,13 @@ export function setActiveList(list) {
   }
 }
 
+export function setActiveListButton(index) {
+  return {
+    type: Constants.SET_ACTIVE_LIST_BUTTON,
+    index
+  }
+}
+
 function onGetMailAccount() {
   return {
     type: Constants.ON_GET_MAIL_ACCOUNT
