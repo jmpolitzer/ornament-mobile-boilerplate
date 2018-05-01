@@ -2,7 +2,6 @@ import React from 'react';
 import { StyleSheet, View, Text } from 'react-native';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import R from 'ramda';
 import CreateContactListForm from './forms/createContactListForm';
 import { createContactList } from '../../redux/mail/actions';
 

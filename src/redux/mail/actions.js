@@ -44,6 +44,13 @@ export function createContactList(folderId, form) {
   }
 }
 
+export function setActiveList(list) {
+  return {
+    type: Constants.SET_ACTIVE_LIST,
+    list
+  }
+}
+
 function onGetMailAccount() {
   return {
     type: Constants.ON_GET_MAIL_ACCOUNT

@@ -4,6 +4,7 @@ import { StackNavigator } from 'react-navigation';
 import Mail from '../containers/mail';
 import ContactLists from '../containers/mail/contactLists';
 import CreateContactList from '../containers/mail/createContactList';
+import List from '../containers/mail/list';
 
 export const MailStack = StackNavigator({
   Mail: {
@@ -24,5 +25,9 @@ export const MailStack = StackNavigator({
   CreateContactList: {
     screen: CreateContactList,
     path: 'mail/contact-lists/create'
+  },
+  List: {
+    screen: List,
+    path: 'mail/contact-lists/:id'
   }
 });

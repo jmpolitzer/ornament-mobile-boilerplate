@@ -1,11 +1,18 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, StyleSheet, View } from 'react-native';
+import { ActivityIndicator, FlatList, View } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
-// import R from 'ramda';
 
 export default class ContactLists extends React.Component {
+  constructor() {
+    super();
+  }
+
+  navigateToListScreen(e, list) {
+    this.props.setActiveList(list);
+    this.props.navigateToListScreen(list.id);
+  }
 
   render() {
     return(
@@ -14,13 +21,11 @@ export default class ContactLists extends React.Component {
         <List>
           <FlatList data={this.props.lists}
                     keyExtractor={(item, index) => item.id.toString()}
-                    renderItem={({item}) => <ListItem title={item.name} />} />
+                    renderItem={({item}) => <ListItem title={item.name}
+                                                      subtitle={`${item.totalSubscribers} Contacts`}
+                                                      onPress={(e) => this.navigateToListScreen(e, item)} />} />
         </List>}
       </View>
     );
   }
 }
-
-const styles = StyleSheet.create({
-
-});

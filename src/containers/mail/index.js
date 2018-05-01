@@ -3,7 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { getMailAccount, createMailFolderForUser, getMailFolderLists } from '../../redux/mail/actions';
+import { getMailAccount, createMailFolderForUser, getMailFolderLists, setActiveList } from '../../redux/mail/actions';
 import ContactLists from './contactLists';
 
 class Mail extends React.Component {
@@ -12,6 +12,8 @@ class Mail extends React.Component {
 
     this.getMailAccount = this.getMailAccount.bind(this);
     this.createMailFolderForUser = this.createMailFolderForUser.bind(this);
+    this.navigateToListScreen = this.navigateToListScreen.bind(this);
+    this.setActiveList = this.setActiveList.bind(this);
   }
 
   componentDidMount() {
@@ -28,12 +30,21 @@ class Mail extends React.Component {
     this.props.createMailFolderForUser(this.props.signedInUser);
   }
 
-  render() {
+  navigateToListScreen(id) {
+    this.props.navigation.navigate('List', { id: id });
+  }
 
+  setActiveList(list) {
+    this.props.setActiveList(list);
+  }
+
+  render() {
     return(
       <View style={styles.container}>
         <Button style={styles.button} backgroundColor='green' title='Test Mail Account' onPress={this.getMailAccount} />
-        {this.props.signedInUser.mailId ? <ContactLists lists={this.props.mailFolderLists} /> :
+        {this.props.signedInUser.mailId ? <ContactLists lists={this.props.mailFolderLists}
+                                                        navigateToListScreen={this.navigateToListScreen}
+                                                        setActiveList={this.setActiveList}/> :
         <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />}
       </View>
     );
@@ -60,7 +71,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   getMailAccount,
   createMailFolderForUser,
-  getMailFolderLists
+  getMailFolderLists,
+  setActiveList
 }, dispatch);
 
 export default connect(
