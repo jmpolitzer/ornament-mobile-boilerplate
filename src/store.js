@@ -1,10 +1,9 @@
 import { createStore, applyMiddleware, compose } from 'redux';
+import { persistStore, persistReducer } from 'redux-persist';
+import storage from 'redux-persist/lib/storage';
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import thunk from 'redux-thunk';
 import rootReducer from './redux/reducers';
-
-const initialState = {};
-const enhancers = [];
 
 const navigation = createReactNavigationReduxMiddleware(
   'root',
@@ -17,14 +16,21 @@ const middleware = [
 ];
 
 const composedEnhancers = compose(
-  applyMiddleware(...middleware),
-  ...enhancers
+  applyMiddleware(...middleware)
 );
 
-const store = createStore(
-  rootReducer,
-  initialState,
-  composedEnhancers
-);
+const persistConfig = {
+  key: 'root',
+  storage,
+  whitelist: ['mail']
+};
 
-export default store;
+const persistedReducer = persistReducer(persistConfig, rootReducer);
+
+
+export default () => {
+  let store = createStore(persistedReducer, {}, composedEnhancers);
+  let persistor = persistStore(store)
+
+  return { store, persistor };
+}
