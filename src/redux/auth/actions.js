@@ -81,7 +81,6 @@ export function getFirebaseToken() {
         .then((token) => {
           return resolve(token);
         }).catch((error) => {
-          console.log('error getting firebase token', error);
           return reject(error);
         });
       } else {

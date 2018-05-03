@@ -1,46 +1,67 @@
 import { NavigationActions } from 'react-navigation';
 import * as Constants from './constants';
 import API from '../../helpers/api';
+import { handleError, dispatchError } from '../../helpers/errors';
 import { updateUser } from '../users/actions';
 
 export function getMailAccount() {
   return async dispatch => {
-    const data = await API.get('/api/mail/accounts');
+    try {
+      const data = await API.get('/api/mail/accounts');
 
-    dispatch(onGetMailAccount());
+      dispatch(onGetMailAccount());
+    } catch(e) {
+      handleError('getMailAccount()', e);
+      dispatchError(e);
+    }
   }
 }
 
 export function createMailFolderForUser(user) {
   return async dispatch => {
-    const data = await API.create('/api/mail/folders');
+    try {
+      const data = await API.create('/api/mail/folders');
 
-    dispatch(updateUser(user.id, { mailId: data.id }));
-    dispatch(getMailFolder(data.id));
-    dispatch(onCreateMailFolderForUser());
+      dispatch(updateUser(user.id, { mailId: data.id }));
+      dispatch(getMailFolder(data.id));
+      dispatch(onCreateMailFolderForUser());
+    } catch(e) {
+      handleError('createMailFolderForUser()', e);
+      dispatchError(e);
+    }
   }
 }
 
 export function getMailFolderLists(folderId) {
   return async dispatch => {
-    const data = await API.get(`/api/mail/folders/${folderId}`);
+    try {
+      const data = await API.get(`/api/mail/folders/${folderId}`);
 
-    dispatch(onGetMailFolderLists(data));
+      dispatch(onGetMailFolderLists(data));
+    } catch(e) {
+      handleError('getMailFolderLists()', e);
+      dispatchError(e);
+    }
   }
 }
 
 export function createContactList(folderId, form) {
   return async dispatch => {
-    const body = {
-      name: form.name
-    };
+    try {
+      const body = {
+        name: form.name
+      };
 
-    dispatch(NavigationActions.navigate({ routeName: 'Mail' }));
+      dispatch(NavigationActions.navigate({ routeName: 'Mail' }));
 
-    const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
+      const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
 
-    dispatch(getMailFolderLists(folderId));
-    dispatch(onCreateContactList());
+      dispatch(getMailFolderLists(folderId));
+      dispatch(onCreateContactList());
+    } catch(e) {
+      handleError('createContactList()', e);
+      dispatchError(e);
+    }
   }
 }
 

@@ -1,4 +1,5 @@
 import { getFirebaseToken } from '../../redux/auth/actions';
+import { handleError } from '../errors';
 
 const url = 'http://localhost:8080';
 
@@ -11,7 +12,7 @@ module.exports = {
       headers: headers,
       body: JSON.stringify(body)
     }).then(res => res.json())
-    .catch(err => handleError(err));
+    .catch(err => handleError('CREATE', err));
   },
 
   async get(path) {
@@ -21,7 +22,7 @@ module.exports = {
       method: 'GET',
       headers: headers
     }).then(res => res.json())
-    .catch(err => handleError(err));
+    .catch(err => handleError('GET', err));
   },
 
   async update(path, body) {
@@ -32,7 +33,7 @@ module.exports = {
       headers: headers,
       body: body
     }).then(res => res.json())
-    .catch(err => handleError(err));
+    .catch(err => handleError('UPDATE', err));
   },
 
   async delete(path) {
@@ -42,17 +43,17 @@ module.exports = {
       method: 'DELETE',
       headers: headers
     }).then(res => res.json())
-    .catch(err => handleError(err));
+    .catch(err => handleError('DELETE', err));
   }
 }
 
 async function getHeaders() {
-  const token = await getFirebaseToken();
-  const httpHeaders = { 'Content-Type': 'application/json', 'Authorization': token };
+  try {
+    const token = await getFirebaseToken();
+    const httpHeaders = { 'Content-Type': 'application/json', 'Authorization': token };
 
-  return new Headers(httpHeaders);
-}
-
-function handleError(err) {
-  console.log('we have an error:', err);
+    return new Headers(httpHeaders);
+  } catch(e) {
+    handleError('getHeaders()', e);
+  }
 }
