@@ -131,7 +131,6 @@ function packageRecipe(doc) {
 
   return {
     key: doc.id,
-    doc,
     name,
     duration
   };

@@ -21,12 +21,10 @@ const composedEnhancers = compose(
 
 const persistConfig = {
   key: 'root',
-  storage,
-  whitelist: ['mail']
+  storage
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);
-
 
 export default () => {
   let store = createStore(persistedReducer, {}, composedEnhancers);
