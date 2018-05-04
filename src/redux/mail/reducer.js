@@ -2,7 +2,8 @@ import * as Constants from './constants';
 
 const initialState = {
   mailFolderLists: null,
-  activeList: {},
+  activeList: null,
+  activeListRow: null,
   activeListButton: 0
 };
 
@@ -24,6 +25,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         activeListButton: action.index
+      }
+
+    case Constants.SET_ACTIVE_LIST_ROW:
+      return {
+        ...state,
+        activeListRow: action.rowId
       }
 
     default:

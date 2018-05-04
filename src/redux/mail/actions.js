@@ -65,10 +65,25 @@ export function createContactList(folderId, form) {
   }
 }
 
+export function deleteContactList(list) {
+  console.log('deleting contact list:', list);
+
+  return dispatch => {
+    dispatch(onDeleteContactList());
+  }
+}
+
 export function setActiveList(list) {
   return {
     type: Constants.SET_ACTIVE_LIST,
     list
+  }
+}
+
+export function setActiveListRow(rowId) {
+  return {
+    type: Constants.SET_ACTIVE_LIST_ROW,
+    rowId
   }
 }
 
@@ -101,5 +116,11 @@ function onGetMailFolderLists(data) {
 function onCreateContactList() {
   return {
     type: Constants.ON_CREATE_LIST
+  }
+}
+
+function onDeleteContactList() {
+  return {
+    type: Constants.ON_DELETE_LIST
   }
 }
