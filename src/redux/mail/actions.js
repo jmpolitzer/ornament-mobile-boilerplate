@@ -38,6 +38,7 @@ export function getMailFolderLists(folderId) {
       const data = await API.get(`/api/mail/folders/${folderId}`);
 
       dispatch(onGetMailFolderLists(data));
+      dispatch(onMakingMailServerRequest(false));
     } catch(e) {
       handleError('getMailFolderLists()', e);
       dispatchError(e);
@@ -52,7 +53,8 @@ export function createContactList(folderId, form) {
         name: form.name
       };
 
-      dispatch(NavigationActions.navigate({ routeName: 'Mail' }));
+      dispatch(onMakingMailServerRequest(true));
+      dispatch(NavigationActions.back());
 
       const data = await API.create(`/api/mail/folders/${folderId}/lists`, body);
 
@@ -65,11 +67,18 @@ export function createContactList(folderId, form) {
   }
 }
 
-export function deleteContactList(list) {
-  console.log('deleting contact list:', list);
+export function deleteContactList(folderId, listId, listCount) {
+  return async dispatch => {
+    dispatch(onDeleteContactList(listId));
 
-  return dispatch => {
-    dispatch(onDeleteContactList());
+    try {
+      const data = await API.delete(`/api/mail/folders/${folderId}/lists/${listId}`);
+
+      dispatch(getMailFolderLists(folderId));
+    } catch(e) {
+      handleError('delectContactList()', e);
+      dispatchError(e);
+    }
   }
 }
 
@@ -109,7 +118,14 @@ function onCreateMailFolderForUser() {
 function onGetMailFolderLists(data) {
   return {
     type: Constants.ON_GET_FOLDER_LISTS_FOR_USER,
-    lists: data.lists
+    lists: data.lists || []
+  }
+}
+
+function onMakingMailServerRequest(bool) {
+  return {
+    type: Constants.ON_MAKING_MAIL_SERVER_REQUEST,
+    makingMailServerRequest: bool
   }
 }
 
@@ -119,8 +135,9 @@ function onCreateContactList() {
   }
 }
 
-function onDeleteContactList() {
+function onDeleteContactList(listId) {
   return {
-    type: Constants.ON_DELETE_LIST
+    type: Constants.ON_DELETE_LIST,
+    listId
   }
 }

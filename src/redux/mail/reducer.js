@@ -1,10 +1,12 @@
+import R from 'ramda';
 import * as Constants from './constants';
 
 const initialState = {
-  mailFolderLists: null,
+  mailFolderLists: [],
   activeList: null,
   activeListRow: null,
-  activeListButton: 0
+  activeListButton: 0,
+  makingMailServerRequest: false
 };
 
 export default (state = initialState, action) => {
@@ -31,6 +33,18 @@ export default (state = initialState, action) => {
       return {
         ...state,
         activeListRow: action.rowId
+      }
+
+    case Constants.ON_MAKING_MAIL_SERVER_REQUEST:
+      return {
+        ...state,
+        makingMailServerRequest: action.makingMailServerRequest
+      }
+
+    case Constants.ON_DELETE_LIST:
+      return {
+        ...state,
+        mailFolderLists: R.filter(((x) => x.id !== action.listId), state.mailFolderLists)
       }
 
     default:

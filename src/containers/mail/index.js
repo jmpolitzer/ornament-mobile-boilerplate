@@ -34,7 +34,7 @@ class Mail extends React.Component {
   }
 
   deleteContactList() {
-    this.props.deleteContactList(this.props.activeListRow);
+    this.props.deleteContactList(this.props.signedInUser.mailId, this.props.activeListRow);
   }
 
   navigateToListScreen(id) {
@@ -58,7 +58,8 @@ class Mail extends React.Component {
                                                         setActiveList={this.setActiveList}
                                                         setActiveListRow={this.setActiveListRow}
                                                         activeListRow={this.props.activeListRow}
-                                                        deleteContactList={this.deleteContactList} /> :
+                                                        deleteContactList={this.deleteContactList}
+                                                        makingMailServerRequest={this.props.makingMailServerRequest} /> :
         <Button style={styles.button} backgroundColor='blue' title='Get Started with Mail' onPress={this.createMailFolderForUser} />}
       </View>
     );
@@ -79,7 +80,8 @@ const mapStateToProps = state => {
   return {
     signedInUser: state.auth.signedInUser,
     mailFolderLists: state.mail.mailFolderLists,
-    activeListRow: state.mail.activeListRow
+    activeListRow: state.mail.activeListRow,
+    makingMailServerRequest: state.mail.makingMailServerRequest
   };
 }
 

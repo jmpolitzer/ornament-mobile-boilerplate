@@ -1,5 +1,5 @@
 import React from 'react';
-import { ActivityIndicator, FlatList, View } from 'react-native';
+import { ActivityIndicator, FlatList, View, Text } from 'react-native';
 import { List, ListItem } from 'react-native-elements';
 import { connect } from 'react-redux';
 import { bindActionCreators } from 'redux';
@@ -39,7 +39,8 @@ export default class ContactLists extends React.Component {
 
     return(
       <View>
-        {!this.props.lists ? <ActivityIndicator/> :
+        {this.props.makingMailServerRequest ? <ActivityIndicator/> :
+         !this.props.lists.length ? <Text>You do not have any lists.</Text> :
         <List>
           <FlatList data={this.props.lists}
                     extraData={this.props.activeListRow}
