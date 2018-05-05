@@ -67,6 +67,12 @@ export function createContactList(folderId, form) {
   }
 }
 
+export function updateContactList(folderId, listId, form) {
+  console.log(folderId, listId, form);
+
+  dispatch(onUpdateContactList());
+}
+
 export function deleteContactList(folderId, listId, listCount) {
   return async dispatch => {
     dispatch(onDeleteContactList(listId));
@@ -103,6 +109,20 @@ export function setActiveListButton(index) {
   }
 }
 
+export function toggleEditListMode(bool) {
+  return {
+    type: Constants.SHOW_EDIT_LIST_MODE,
+    showEditListMode: bool
+  }
+}
+
+export function onMakingMailServerRequest(bool) {
+  return {
+    type: Constants.ON_MAKING_MAIL_SERVER_REQUEST,
+    makingMailServerRequest: bool
+  }
+}
+
 function onGetMailAccount() {
   return {
     type: Constants.ON_GET_MAIL_ACCOUNT
@@ -122,16 +142,15 @@ function onGetMailFolderLists(data) {
   }
 }
 
-function onMakingMailServerRequest(bool) {
-  return {
-    type: Constants.ON_MAKING_MAIL_SERVER_REQUEST,
-    makingMailServerRequest: bool
-  }
-}
-
 function onCreateContactList() {
   return {
     type: Constants.ON_CREATE_LIST
+  }
+}
+
+function onUpdateContactList() {
+  return {
+    type: Constants.ON_UPDATE_LIST
   }
 }
 

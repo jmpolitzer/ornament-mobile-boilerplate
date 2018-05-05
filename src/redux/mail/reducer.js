@@ -6,6 +6,7 @@ const initialState = {
   activeList: null,
   activeListRow: null,
   activeListButton: 0,
+  showEditListMode: false,
   makingMailServerRequest: false
 };
 
@@ -33,6 +34,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         activeListRow: action.rowId
+      }
+
+    case Constants.SHOW_EDIT_LIST_MODE:
+      return {
+        ...state,
+        showEditListMode: action.showEditListMode
       }
 
     case Constants.ON_MAKING_MAIL_SERVER_REQUEST:

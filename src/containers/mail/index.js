@@ -4,7 +4,8 @@ import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
 import { getMailAccount, createMailFolderForUser, getMailFolderLists,
-         deleteContactList, setActiveList, setActiveListRow } from '../../redux/mail/actions';
+         deleteContactList, setActiveList, setActiveListRow,
+         onMakingMailServerRequest } from '../../redux/mail/actions';
 import ContactLists from './contactLists';
 
 class Mail extends React.Component {
@@ -22,6 +23,7 @@ class Mail extends React.Component {
   componentDidMount() {
     if(this.props.signedInUser && this.props.signedInUser.mailId) {
       this.props.getMailFolderLists(this.props.signedInUser.mailId);
+      !this.props.mailFolderLists.length && this.props.onMakingMailServerRequest(true);
     }
   }
 
@@ -91,7 +93,8 @@ const mapDispatchToProps = dispatch => bindActionCreators({
   getMailFolderLists,
   deleteContactList,
   setActiveList,
-  setActiveListRow
+  setActiveListRow,
+  onMakingMailServerRequest
 }, dispatch);
 
 export default connect(

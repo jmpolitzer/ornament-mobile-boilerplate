@@ -50,12 +50,8 @@ export default class ContactLists extends React.Component {
                         rowId={item.id}
                         autoClose={true}
                         close={item.id !== this.props.activeListeRow}
-                        onOpen={(sectionId, rowId, direction) => {
-                          this.onSwipeOpen(item.id, direction);
-                        }}
-                        onClose={(sectionId, rowId, direction) => {
-                          this.onSwipeClose(item.id, direction);
-                        }}>
+                        onOpen={(sectionId, rowId, direction) => this.onSwipeOpen(item.id, direction)}
+                        onClose={(sectionId, rowId, direction) => this.onSwipeClose(item.id, direction)}>
                           <ListItem title={item.name}
                                     subtitle={`${item.totalSubscribers} Contacts`}
                                     onPress={(e) => this.navigateToListScreen(e, item)} />

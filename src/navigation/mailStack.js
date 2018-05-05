@@ -11,8 +11,8 @@ export const MailStack = StackNavigator({
     screen: Mail,
     navigationOptions: ({ navigation }) => ({
       title: 'Contact Lists',
-      headerRight: <Icon name='plus'
-                         type='material-community'
+      headerRight: <Icon name='add-to-list'
+                         type='entypo'
                          onPress={() => {
                            navigation.navigate('CreateContactList')
                          }}/>

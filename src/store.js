@@ -28,7 +28,7 @@ const persistedReducer = persistReducer(persistConfig, rootReducer);
 
 export default () => {
   let store = createStore(persistedReducer, {}, composedEnhancers);
-  let persistor = persistStore(store)
+  let persistor = persistStore(store);
 
   return { store, persistor };
 }
