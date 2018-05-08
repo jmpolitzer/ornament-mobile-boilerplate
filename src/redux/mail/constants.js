@@ -9,3 +9,4 @@ export const SET_ACTIVE_LIST = 'mail/SET_ACTIVE_LIST';
 export const SET_ACTIVE_LIST_ROW = 'mail/SET_ACTIVE_LIST_ROW';
 export const SET_ACTIVE_LIST_BUTTON = 'mail/SET_ACTIVE_LIST_BUTTON';
 export const SHOW_EDIT_LIST_MODE = 'mail/SHOW_EDIT_LIST_MODE';
+export const RESET_LIST_SCREEN = 'mail/RESET_LIST_SCREEN';

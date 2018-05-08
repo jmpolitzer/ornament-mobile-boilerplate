@@ -42,6 +42,13 @@ export default (state = initialState, action) => {
         showEditListMode: action.showEditListMode
       }
 
+    case Constants.RESET_LIST_SCREEN:
+      return {
+        ...state,
+        showEditListMode: action.showEditListMode,
+        activeListButton: action.activeListButton
+      }
+
     case Constants.ON_MAKING_MAIL_SERVER_REQUEST:
       return {
         ...state,

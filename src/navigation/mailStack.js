@@ -1,21 +1,19 @@
 import React from 'react';
 import { Icon} from 'react-native-elements';
-import { StackNavigator } from 'react-navigation';
+import { StackNavigator, HeaderBackButton } from 'react-navigation';
 import Mail from '../containers/mail';
 import ContactLists from '../containers/mail/contactLists';
 import CreateContactList from '../containers/mail/createContactList';
 import List from '../containers/mail/list';
+import { resetListScreen } from '../redux/mail/actions';
 
 export const MailStack = StackNavigator({
   Mail: {
     screen: Mail,
     navigationOptions: ({ navigation }) => ({
-      title: 'Contact Lists',
       headerRight: <Icon name='add-to-list'
                          type='entypo'
-                         onPress={() => {
-                           navigation.navigate('CreateContactList')
-                         }}/>
+                         onPress={() => navigation.navigate('CreateContactList')}/>
     })
   },
   ContactLists: {
@@ -28,6 +26,12 @@ export const MailStack = StackNavigator({
   },
   List: {
     screen: List,
-    path: 'mail/contact-lists/:id'
+    path: 'mail/contact-lists/:id',
+    navigationOptions: ({ navigation }) => ({
+      headerLeft: <HeaderBackButton onPress={() => {
+        navigation.goBack();
+        setTimeout(() => navigation.dispatch(resetListScreen()), 1000);
+      }}/>
+    })
   }
 });

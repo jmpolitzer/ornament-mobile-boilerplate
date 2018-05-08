@@ -3,6 +3,7 @@ import { persistStore, persistReducer } from 'redux-persist';
 import storage from 'redux-persist/lib/storage';
 import { createReactNavigationReduxMiddleware } from 'react-navigation-redux-helpers';
 import thunk from 'redux-thunk';
+import { mailTransform } from './redux/transforms';
 import rootReducer from './redux/reducers';
 
 const navigation = createReactNavigationReduxMiddleware(
@@ -21,7 +22,8 @@ const composedEnhancers = compose(
 
 const persistConfig = {
   key: 'root',
-  storage
+  storage,
+  transforms: [mailTransform]
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

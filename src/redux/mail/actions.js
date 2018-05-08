@@ -116,6 +116,14 @@ export function toggleEditListMode(bool) {
   }
 }
 
+export function resetListScreen() {
+  return {
+    type: Constants.RESET_LIST_SCREEN,
+    showEditListMode: false,
+    activeListButton: 0
+  }
+}
+
 export function onMakingMailServerRequest(bool) {
   return {
     type: Constants.ON_MAKING_MAIL_SERVER_REQUEST,
