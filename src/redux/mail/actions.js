@@ -68,9 +68,20 @@ export function createContactList(folderId, form) {
 }
 
 export function updateContactList(folderId, listId, form) {
-  console.log(folderId, listId, form);
+  return async dispatch => {
+    try {
+      dispatch(onMakingMailServerRequest(true));
+      dispatch(NavigationActions.back());
 
-  dispatch(onUpdateContactList());
+      const data = await API.update(`/api/mail/folders/${folderId}/lists/${listId}`, form);
+
+      dispatch(getMailFolderLists(folderId));
+      dispatch(onUpdateContactList());
+    } catch(e) {
+      handleError('updateContactList()', e);
+      dispatchError(e);
+    }
+  }
 }
 
 export function deleteContactList(folderId, listId, listCount) {

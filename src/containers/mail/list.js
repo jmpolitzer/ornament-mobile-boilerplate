@@ -2,8 +2,9 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
-import { ButtonGroup, Icon } from 'react-native-elements';
-import { setActiveListButton, toggleEditListMode } from '../../redux/mail/actions';
+import { ButtonGroup, Button, Icon } from 'react-native-elements';
+import { updateContactList, setActiveListButton, toggleEditListMode } from '../../redux/mail/actions';
+import UpdateContactListForm from './forms/updateContactListForm';
 import ListContacts from './listContacts';
 import ListCampaigns from './listCampaigns';
 
@@ -11,10 +12,15 @@ class List extends React.Component {
   constructor() {
     super();
 
+    this.updateList = this.updateList.bind(this);
     this.toggleEditListMode = this.toggleEditListMode.bind(this);
     this.updateIndex = this.updateIndex.bind(this);
     this.getDisplayOrEditList = this.getDisplayOrEditList.bind(this);
     this.getActiveListSection = this.getActiveListSection.bind(this);
+  }
+
+  updateList(form) {
+    this.props.updateContactList(this.props.signedInUser.mailId, this.props.activeList.id, form);
   }
 
   toggleEditListMode(e, bool) {
@@ -26,8 +32,16 @@ class List extends React.Component {
   }
 
   getDisplayOrEditList() {
+    const initialValues = { name: this.props.activeList.name };
+
     return this.props.showEditListMode ?
-      <Text onPress={(e) => this.toggleEditListMode(e, false)}>Edit List Name</Text> :
+      <View style={styles.listTitleRow}>
+        <View style={styles.editForm}>
+          <UpdateContactListForm initialValues={initialValues} onSubmit={this.updateList} />
+          <Button style={styles.cancelButton} title='Cancel' onPress={(e) => this.toggleEditListMode(e, false)}/>
+        </View>
+      </View>
+      :
       <View style={styles.listTitleRow}>
         <Text style={styles.listTitle}>{this.props.activeList.name}</Text>
         <Icon style={styles.editIcon} name='edit' type='material-icons' onPress={(e) => this.toggleEditListMode(e, true)}/>
@@ -74,6 +88,12 @@ const styles = StyleSheet.create({
     transform: [{ rotate: '270deg'}],
     marginLeft: 5
   },
+  editForm: {
+    flexDirection: 'column'
+  },
+  cancelButton: {
+    marginTop: 5
+  },
   buttonGroup: {
     height: 70
   }
@@ -90,7 +110,8 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   setActiveListButton,
-  toggleEditListMode
+  toggleEditListMode,
+  updateContactList
 }, dispatch);
 
 export default connect(
