@@ -23,7 +23,8 @@ const composedEnhancers = compose(
 const persistConfig = {
   key: 'root',
   storage,
-  transforms: [mailTransform]
+  transforms: [mailTransform],
+  blacklist: ['form']
 };
 
 const persistedReducer = persistReducer(persistConfig, rootReducer);

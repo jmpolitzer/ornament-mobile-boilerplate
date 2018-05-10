@@ -76,6 +76,7 @@ export function updateContactList(folderId, listId, form) {
       const data = await API.update(`/api/mail/folders/${folderId}/lists/${listId}`, form);
 
       dispatch(getMailFolderLists(folderId));
+      dispatch(resetListScreen());
       dispatch(onUpdateContactList());
     } catch(e) {
       handleError('updateContactList()', e);
