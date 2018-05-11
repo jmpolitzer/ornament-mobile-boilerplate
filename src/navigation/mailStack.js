@@ -5,6 +5,7 @@ import Mail from '../containers/mail';
 import ContactLists from '../containers/mail/contactLists';
 import CreateContactList from '../containers/mail/createContactList';
 import List from '../containers/mail/list';
+import AddContacts from '../containers/mail/addContacts';
 import { resetListScreen } from '../redux/mail/actions';
 
 export const MailStack = StackNavigator({
@@ -33,5 +34,10 @@ export const MailStack = StackNavigator({
         setTimeout(() => navigation.dispatch(resetListScreen()), 1000);
       }}/>
     })
+  },
+  /* TODO: Make this a modal. */ 
+  AddContacts: {
+    screen: AddContacts,
+    path: 'mail/contact-lists/:id/add'
   }
 });

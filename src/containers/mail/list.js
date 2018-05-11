@@ -3,7 +3,8 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import { ButtonGroup, Button, Icon } from 'react-native-elements';
-import { updateContactList, setActiveListButton, toggleEditListMode } from '../../redux/mail/actions';
+import { updateContactList, setActiveListButton, toggleEditListMode,
+         launchDeviceContacts } from '../../redux/mail/actions';
 import UpdateContactListForm from './forms/updateContactListForm';
 import ListContacts from './listContacts';
 import ListCampaigns from './listCampaigns';
@@ -17,6 +18,7 @@ class List extends React.Component {
     this.updateIndex = this.updateIndex.bind(this);
     this.getDisplayOrEditList = this.getDisplayOrEditList.bind(this);
     this.getActiveListSection = this.getActiveListSection.bind(this);
+    this.launchDeviceContacts = this.launchDeviceContacts.bind(this);
   }
 
   updateList(form) {
@@ -29,6 +31,10 @@ class List extends React.Component {
 
   updateIndex(selectedIndex) {
     this.props.setActiveListButton(selectedIndex);
+  }
+
+  launchDeviceContacts() {
+    this.props.launchDeviceContacts();
   }
 
   getDisplayOrEditList() {
@@ -50,7 +56,7 @@ class List extends React.Component {
 
   getActiveListSection() {
     const sections = {
-      0: <ListContacts />,
+      0: <ListContacts launchDeviceContacts={this.launchDeviceContacts} />,
       1: <ListCampaigns />
     };
 
@@ -111,7 +117,8 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   setActiveListButton,
   toggleEditListMode,
-  updateContactList
+  updateContactList,
+  launchDeviceContacts
 }, dispatch);
 
 export default connect(

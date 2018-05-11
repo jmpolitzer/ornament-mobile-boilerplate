@@ -1,7 +1,7 @@
 import { getFirebaseToken } from '../../redux/auth/actions';
 import { handleError } from '../errors';
 
-const url = 'http://localhost:8080';
+const url = 'http://192.168.255.102:8080';
 
 module.exports = {
   async create(path, body) {

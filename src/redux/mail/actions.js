@@ -1,4 +1,5 @@
 import { NavigationActions } from 'react-navigation';
+import { Permissions, Contacts } from 'expo';
 import * as Constants from './constants';
 import API from '../../helpers/api';
 import { handleError, dispatchError } from '../../helpers/errors';
@@ -97,6 +98,40 @@ export function deleteContactList(folderId, listId, listCount) {
       handleError('delectContactList()', e);
       dispatchError(e);
     }
+  }
+}
+
+export function launchDeviceContacts() {
+  return async dispatch => {
+    const permission = await Permissions.askAsync(Permissions.CONTACTS);
+
+    if(permission.status !== 'granted') {
+      console.log('permission denied!');
+
+      /* TODO: Show dropdown saying to allow access to device contacts. */
+      /* TODO: Dispatch permission not given. */
+
+      return;
+    }
+
+    const contacts = await Contacts.getContactsAsync({
+      fields: [
+        Contacts.PHONE_NUMBER,
+        Contacts.EMAILS
+      ]
+    });
+
+    if(contacts.total > 0) {
+      dispatch(setDeviceContacts(contacts));
+      dispatch(NavigationActions.navigate({ routeName: 'AddContacts' }));
+    }
+  }
+}
+
+function setDeviceContacts(contacts) {
+  return {
+    type: Constants.SET_DEVICE_CONTACTS,
+    contacts
   }
 }
 

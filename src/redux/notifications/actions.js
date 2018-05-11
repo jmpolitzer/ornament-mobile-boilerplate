@@ -31,6 +31,9 @@ export function registerForPushNotifications(user) {
     }
 
     if(finalStatus !== 'granted') {
+      /* TODO: Show dropdown saying to allow access to notifications. */
+      /* TODO: Dispatch permission not given. */
+
       return;
     }
 

@@ -3,6 +3,7 @@ import * as Constants from './constants';
 
 const initialState = {
   mailFolderLists: [],
+  deviceContacts: [],
   activeList: null,
   activeListRow: null,
   activeListButton: 0,
@@ -59,6 +60,12 @@ export default (state = initialState, action) => {
       return {
         ...state,
         mailFolderLists: R.filter(((x) => x.id !== action.listId), state.mailFolderLists)
+      }
+
+    case Constants.SET_DEVICE_CONTACTS:
+      return {
+        ...state,
+        deviceContacts: action.contacts
       }
 
     default:

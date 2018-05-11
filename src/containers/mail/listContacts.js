@@ -1,9 +1,8 @@
 import React from 'react';
-import { bindActionCreators } from 'redux';
-import { connect } from 'react-redux';
-import { View, StyleSheet, Text } from 'react-native';
+import { View, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 
-class ListContacts extends React.Component {
+export default class ListContacts extends React.Component {
   constructor() {
     super();
   }
@@ -11,7 +10,7 @@ class ListContacts extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <Text>These are the contacts in this list.</Text>
+        <Button title='Add Contact' onPress={this.props.launchDeviceContacts} />
       </View>
     );
   }
@@ -23,18 +22,3 @@ const styles = StyleSheet.create({
     paddingTop: 22
   }
 });
-
-const mapStateToProps = state => {
-  return {
-
-  };
-}
-
-const mapDispatchToProps = dispatch => bindActionCreators({
-
-}, dispatch);
-
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(ListContacts);
