@@ -4,6 +4,7 @@ import * as Constants from './constants';
 const initialState = {
   mailFolderLists: [],
   deviceContacts: [],
+  selectedDeviceContacts: {},
   activeList: null,
   activeListRow: null,
   activeListButton: 0,
@@ -60,6 +61,15 @@ export default (state = initialState, action) => {
       return {
         ...state,
         mailFolderLists: R.filter(((x) => x.id !== action.listId), state.mailFolderLists)
+      }
+
+    case Constants.SELECT_DEVICE_CONTACT:
+      return {
+        ...state,
+        selectedDeviceContacts: {
+          ...state.selectedDeviceContacts,
+          [action.id]: !state.selectedDeviceContacts[action.id]
+        }
       }
 
     case Constants.SET_DEVICE_CONTACTS:

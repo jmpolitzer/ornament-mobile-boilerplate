@@ -128,6 +128,13 @@ export function launchDeviceContacts() {
   }
 }
 
+export function selectDeviceContact(id) {
+  return {
+    type: Constants.SELECT_DEVICE_CONTACT,
+    id
+  }
+}
+
 function setDeviceContacts(contacts) {
   return {
     type: Constants.SET_DEVICE_CONTACTS,
