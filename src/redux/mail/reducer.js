@@ -72,6 +72,12 @@ export default (state = initialState, action) => {
         }
       }
 
+    case Constants.CLEAR_SELECTED_DEVICE_CONTACTS:
+      return {
+        ...state,
+        selectedDeviceContacts: {}
+      }
+
     case Constants.SET_DEVICE_CONTACTS:
       return {
         ...state,

@@ -1,5 +1,6 @@
 import { NavigationActions } from 'react-navigation';
 import { Permissions, Contacts } from 'expo';
+import R from 'ramda';
 import * as Constants from './constants';
 import API from '../../helpers/api';
 import { handleError, dispatchError } from '../../helpers/errors';
@@ -135,11 +136,23 @@ export function selectDeviceContact(id) {
   }
 }
 
-export function saveDeviceContacts(allContacts, contactsToSave) {
-  console.log(allContacts, contactsToSave);
+export function saveDeviceContacts(allContacts, selectedContacts) {
+  const isTrue = x => x === true;
+  const selectedContactsFilter = R.filter(isTrue, selectedContacts);
+  const selectedIds = R.keys(selectedContactsFilter);
+  const allContactsFilter = x => R.contains(x.id, selectedIds);
+  const contactsToSave = R.filter(allContactsFilter, allContacts.data);
+
+  console.log(contactsToSave);
 
   return {
     type: Constants.ON_SAVE_DEVICE_CONTACTS
+  }
+}
+
+export function clearSelectedDeviceContacts() {
+  return {
+    type: Constants.CLEAR_SELECTED_DEVICE_CONTACTS
   }
 }
 

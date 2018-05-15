@@ -7,7 +7,7 @@ import CreateContactList from '../containers/mail/createContactList';
 import List from '../containers/mail/list';
 import AddContacts from '../containers/mail/addContacts';
 import SaveDeviceContactsButton from '../containers/mail/components/saveDeviceContactsButton';
-import { resetListScreen } from '../redux/mail/actions';
+import { resetListScreen, clearSelectedDeviceContacts } from '../redux/mail/actions';
 
 export const MailStack = StackNavigator({
   Mail: {
@@ -41,6 +41,10 @@ export const MailStack = StackNavigator({
     screen: AddContacts,
     path: 'mail/contact-lists/:id/add',
     navigationOptions: ({ navigation }) => ({
+      headerLeft: <HeaderBackButton onPress={() => {
+        navigation.goBack();
+        navigation.dispatch(clearSelectedDeviceContacts());
+      }}/>,
       headerRight: <SaveDeviceContactsButton navigation={navigation} />
     })
   }

@@ -2,7 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { Button } from 'react-native';
-import { saveDeviceContacts } from '../../../redux/mail/actions';
+import { saveDeviceContacts, clearSelectedDeviceContacts } from '../../../redux/mail/actions';
 
 class SaveDeviceContactsButton extends React.Component {
   constructor() {
@@ -13,6 +13,7 @@ class SaveDeviceContactsButton extends React.Component {
 
   saveDeviceContacts() {
     this.props.saveDeviceContacts(this.props.allContacts, this.props.contactsToSave);
+    this.props.clearSelectedDeviceContacts();
 
     this.props.navigation.goBack();
   }
@@ -33,6 +34,7 @@ const mapStateToProps = state => {
 
 const mapDispatchToProps = dispatch => bindActionCreators({
   saveDeviceContacts,
+  clearSelectedDeviceContacts
 }, dispatch);
 
 export default connect(
