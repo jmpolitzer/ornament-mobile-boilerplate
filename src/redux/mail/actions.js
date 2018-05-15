@@ -135,6 +135,14 @@ export function selectDeviceContact(id) {
   }
 }
 
+export function saveDeviceContacts(allContacts, contactsToSave) {
+  console.log(allContacts, contactsToSave);
+
+  return {
+    type: Constants.ON_SAVE_DEVICE_CONTACTS
+  }
+}
+
 function setDeviceContacts(contacts) {
   return {
     type: Constants.SET_DEVICE_CONTACTS,

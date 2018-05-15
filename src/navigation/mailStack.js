@@ -1,11 +1,12 @@
 import React from 'react';
-import { Icon} from 'react-native-elements';
+import { Icon } from 'react-native-elements';
 import { StackNavigator, HeaderBackButton } from 'react-navigation';
 import Mail from '../containers/mail';
 import ContactLists from '../containers/mail/contactLists';
 import CreateContactList from '../containers/mail/createContactList';
 import List from '../containers/mail/list';
 import AddContacts from '../containers/mail/addContacts';
+import SaveDeviceContactsButton from '../containers/mail/components/saveDeviceContactsButton';
 import { resetListScreen } from '../redux/mail/actions';
 
 export const MailStack = StackNavigator({
@@ -35,9 +36,12 @@ export const MailStack = StackNavigator({
       }}/>
     })
   },
-  /* TODO: Make this a modal. */ 
+  /* TODO: Make this a modal. */
   AddContacts: {
     screen: AddContacts,
-    path: 'mail/contact-lists/:id/add'
+    path: 'mail/contact-lists/:id/add',
+    navigationOptions: ({ navigation }) => ({
+      headerRight: <SaveDeviceContactsButton navigation={navigation} />
+    })
   }
 });
