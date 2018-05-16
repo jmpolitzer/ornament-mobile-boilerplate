@@ -136,24 +136,42 @@ export function selectDeviceContact(id) {
   }
 }
 
-export function saveDeviceContacts(allContacts, selectedContacts) {
-  const isTrue = x => x === true;
-  const selectedContactsFilter = R.filter(isTrue, selectedContacts);
-  const selectedIds = R.keys(selectedContactsFilter);
-  const allContactsFilter = x => R.contains(x.id, selectedIds);
-  const contactsToSave = R.filter(allContactsFilter, allContacts.data);
-
-  console.log(contactsToSave);
-
-  return {
-    type: Constants.ON_SAVE_DEVICE_CONTACTS
-  }
-}
-
 export function clearSelectedDeviceContacts() {
   return {
     type: Constants.CLEAR_SELECTED_DEVICE_CONTACTS
   }
+}
+
+export function saveDeviceContacts(allContacts, selectedContacts) {
+  return async dispatch => {
+    try {
+      dispatch(NavigationActions.back());
+      dispatch(clearSelectedDeviceContacts());
+
+      const isTrue = x => x === true;
+      const selectedContactsFilter = R.filter(isTrue, selectedContacts);
+      const selectedIds = R.keys(selectedContactsFilter);
+      const allContactsFilter = x => R.contains(x.id, selectedIds);
+      const contactsToSave = R.filter(allContactsFilter, allContacts.data);
+
+      const data = await processSavingContacts(contactsToSave);
+
+      return {
+        type: Constants.ON_SAVE_DEVICE_CONTACTS
+      }
+    } catch(e) {
+      handleError('saveDeviceContacts()', e);
+      dispatchError(e);
+    }
+  }
+}
+
+async function processSavingContacts(contacts) {
+  const promises = contacts.map((contact) => API.create(`/api/mail/contacts`, contact));
+
+  const done = await Promise.all(promises);
+
+  return done;
 }
 
 function setDeviceContacts(contacts) {
