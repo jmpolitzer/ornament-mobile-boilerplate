@@ -36,7 +36,6 @@ export const MailStack = StackNavigator({
       }}/>
     })
   },
-  /* TODO: Make this a modal. */
   AddContacts: {
     screen: AddContacts,
     path: 'mail/contact-lists/:id/add',

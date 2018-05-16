@@ -3,8 +3,7 @@ import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet, Text } from 'react-native';
 import { ButtonGroup, Button, Icon } from 'react-native-elements';
-import { updateContactList, setActiveListButton, toggleEditListMode,
-         launchDeviceContacts } from '../../redux/mail/actions';
+import { updateContactList, setActiveListButton, toggleEditListMode } from '../../redux/mail/actions';
 import UpdateContactListForm from './forms/updateContactListForm';
 import ListContacts from './listContacts';
 import ListCampaigns from './listCampaigns';
@@ -56,7 +55,7 @@ class List extends React.Component {
 
   getActiveListSection() {
     const sections = {
-      0: <ListContacts launchDeviceContacts={this.launchDeviceContacts} />,
+      0: <ListContacts />,
       1: <ListCampaigns />
     };
 
@@ -117,8 +116,7 @@ const mapStateToProps = state => {
 const mapDispatchToProps = dispatch => bindActionCreators({
   setActiveListButton,
   toggleEditListMode,
-  updateContactList,
-  launchDeviceContacts
+  updateContactList
 }, dispatch);
 
 export default connect(

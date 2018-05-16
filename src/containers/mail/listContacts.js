@@ -10,7 +10,7 @@ export default class ListContacts extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <Button title='Add Contact' onPress={this.props.launchDeviceContacts} />
+        <Button title='Add Contacts' onPress={() => console.log('adding contacts to list')} />
       </View>
     );
   }

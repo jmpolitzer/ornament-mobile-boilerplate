@@ -2,8 +2,8 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { View, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
-import { getMailAccount, createMailFolderForUser, getMailFolderLists,
+import { Button, Text } from 'react-native-elements';
+import { createMailFolderForUser, getMailFolderLists, launchDeviceContacts,
          deleteContactList, setActiveList, setActiveListRow,
          onMakingMailServerRequest } from '../../redux/mail/actions';
 import ContactLists from './contactLists';
@@ -12,7 +12,7 @@ class Mail extends React.Component {
   constructor() {
     super();
 
-    this.getMailAccount = this.getMailAccount.bind(this);
+    this.launchDeviceContacts = this.launchDeviceContacts.bind(this);
     this.createMailFolderForUser = this.createMailFolderForUser.bind(this);
     this.deleteContactList = this.deleteContactList.bind(this);
     this.navigateToListScreen = this.navigateToListScreen.bind(this);
@@ -27,8 +27,8 @@ class Mail extends React.Component {
     }
   }
 
-  getMailAccount() {
-    this.props.getMailAccount();
+  launchDeviceContacts() {
+    this.props.launchDeviceContacts();
   }
 
   createMailFolderForUser() {
@@ -54,7 +54,8 @@ class Mail extends React.Component {
   render() {
     return(
       <View style={styles.container}>
-        <Button style={styles.button} backgroundColor='green' title='Test Mail Account' onPress={this.getMailAccount} />
+        <Button style={styles.button} backgroundColor='green' title='Import Contacts' onPress={this.launchDeviceContacts} />
+        <Text style={styles.title}>My Lists</Text>
         {this.props.signedInUser.mailId ? <ContactLists lists={this.props.mailFolderLists}
                                                         navigateToListScreen={this.navigateToListScreen}
                                                         setActiveList={this.setActiveList}
@@ -73,8 +74,14 @@ const styles = StyleSheet.create({
     flex: 1,
     paddingTop: 22
   },
+  title: {
+    fontWeight: 'bold',
+    fontSize: 24,
+    textAlign: 'center'
+  },
   button: {
-    marginTop: 5
+    marginTop: 5,
+    marginBottom: 15
   }
 });
 
@@ -88,13 +95,13 @@ const mapStateToProps = state => {
 }
 
 const mapDispatchToProps = dispatch => bindActionCreators({
-  getMailAccount,
   createMailFolderForUser,
   getMailFolderLists,
   deleteContactList,
   setActiveList,
   setActiveListRow,
-  onMakingMailServerRequest
+  onMakingMailServerRequest,
+  launchDeviceContacts
 }, dispatch);
 
 export default connect(
