@@ -142,7 +142,7 @@ export function clearSelectedDeviceContacts() {
   }
 }
 
-export function saveDeviceContacts(allContacts, selectedContacts) {
+export function saveDeviceContacts(allContacts, selectedContacts, folderId) {
   return async dispatch => {
     try {
       dispatch(NavigationActions.back());
@@ -153,8 +153,10 @@ export function saveDeviceContacts(allContacts, selectedContacts) {
       const selectedIds = R.keys(selectedContactsFilter);
       const allContactsFilter = x => R.contains(x.id, selectedIds);
       const contactsToSave = R.filter(allContactsFilter, allContacts.data);
+      const contactSaveFormat = x => { return { email: x.emails[0].email, attributes: { FIRSTNAME: x.firstName, LASTNAME: x.lastName, FOLDERID: parseInt(folderId, 10) } }};
+      const formattedContacts = R.map(contactSaveFormat, contactsToSave);
 
-      const data = await processSavingContacts(contactsToSave);
+      const data = await processSavingContacts(formattedContacts, folderId);
 
       return {
         type: Constants.ON_SAVE_DEVICE_CONTACTS
@@ -166,12 +168,16 @@ export function saveDeviceContacts(allContacts, selectedContacts) {
   }
 }
 
-async function processSavingContacts(contacts) {
-  const promises = contacts.map((contact) => API.create(`/api/mail/contacts`, contact));
+async function processSavingContacts(contacts, folderId) {
+  try {
+    const promises = contacts.map((contact) => API.create(`/api/mail/folders/${folderId}/contacts`, contact));
+    const done = await Promise.all(promises);
 
-  const done = await Promise.all(promises);
-
-  return done;
+    return done;
+  } catch(e) {
+    handleError('processSavingContacts()', e);
+    dispatchError(e);
+  }
 }
 
 function setDeviceContacts(contacts) {

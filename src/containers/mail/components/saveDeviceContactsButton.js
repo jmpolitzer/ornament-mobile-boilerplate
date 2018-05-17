@@ -12,7 +12,7 @@ class SaveDeviceContactsButton extends React.Component {
   }
 
   saveDeviceContacts() {
-    this.props.saveDeviceContacts(this.props.allContacts, this.props.contactsToSave);
+    this.props.saveDeviceContacts(this.props.allContacts, this.props.contactsToSave, this.props.signedInUser.mailId);
     this.props.clearSelectedDeviceContacts();
 
     this.props.navigation.goBack();
@@ -28,7 +28,8 @@ class SaveDeviceContactsButton extends React.Component {
 const mapStateToProps = state => {
   return {
     contactsToSave: state.mail.selectedDeviceContacts,
-    allContacts: state.mail.deviceContacts
+    allContacts: state.mail.deviceContacts,
+    signedInUser: state.auth.signedInUser
   };
 }
 
