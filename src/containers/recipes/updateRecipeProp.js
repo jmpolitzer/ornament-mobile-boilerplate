@@ -9,9 +9,7 @@ import { updateRecipe } from '../../redux/recipes/actions';
 class UpdateRecipeProp extends React.Component {
   constructor() {
     super();
-  }
 
-  componentWillMount() {
     this.updateRecipe = this.updateRecipe.bind(this);
   }
 

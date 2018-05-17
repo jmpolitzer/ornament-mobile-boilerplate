@@ -73,6 +73,23 @@ export function resetPassword(data) {
   }
 }
 
+export function getFirebaseToken() {
+  return new Promise((resolve, reject) => {
+    fireauth.onAuthStateChanged((user) => {
+      if(user) {
+        user.getIdToken()
+        .then((token) => {
+          return resolve(token);
+        }).catch((error) => {
+          return reject(error);
+        });
+      } else {
+        resolve();
+      }
+    });
+  })
+}
+
 export function launchAuthModal(form) {
   return dispatch => {
     fireauth.signOut();

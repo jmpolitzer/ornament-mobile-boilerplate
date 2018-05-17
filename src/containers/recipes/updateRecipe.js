@@ -8,9 +8,7 @@ import R from 'ramda';
 class UpdateRecipe extends React.Component {
   constructor() {
     super();
-  }
 
-  componentWillMount() {
     this.expandRecipeProps = this.expandRecipeProps.bind(this);
     this.navigateToEditRecipeProp = this.navigateToEditRecipeProp.bind(this);
   }
